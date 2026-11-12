@@ -81,3 +81,7 @@ Switch to **Oceano hipotético** to enter a fictional underwater environment. Pi
 
 **IMPORTANT:** No ocean, underwater life, organisms, or collected samples have been confirmed on K2-18 b. The entire ocean environment is speculative science fiction. Depth uses arbitrary simulation units (U), not meters. The visual scene is an artistic representation, not a validated physical model.
 
+
+## Visual fidelity upgrade
+
+The orbital view now uses deterministic, procedurally generated color variation and drifting atmospheric layers, rather than a flat blue sphere. The speculative underwater environment includes a detailed rocky floor, mineral-like formations, and richer suspended particles. These are **fictional artistic details**, not observed terrain, atmospheric imagery, or life on K2-18 b. The texture is generated in the browser without downloading satellite or telescope images.
