@@ -1,6 +1,6 @@
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float, Sparkles } from '@react-three/drei';
-import { Group, PlaneGeometry, DoubleSide, ACESFilmicToneMapping, SRGBColorSpace } from 'three';
+import { Group, PlaneGeometry, DoubleSide, ACESFilmicToneMapping, SRGBColorSpace, ShaderMaterial, AdditiveBlending } from 'three';
 import { useMemo, useRef } from 'react';
 import type { OceanState } from './ocean';
 function Submersible({ heading }: { heading: number }) {
@@ -35,6 +35,28 @@ function Terrain() {
 function SeafloorSediment() { return <group>
  {Array.from({length:90},(_,i)=>{const x=((i*37)%89-44)*0.21,z=-1-((i*23)%79)*0.16;const size=0.015+(i%4)*0.009;return <mesh key={i} position={[x,-2.89+Math.sin(x*0.61)*Math.cos(z*0.43)*0.35,z]} rotation={[i*0.7,i*0.3,0]}><icosahedronGeometry args={[size,0]}/><meshStandardMaterial color={i%3===0?'#5b7c7e':'#2c5860'} roughness={1}/></mesh>;})}
  </group>; }
+function CausticLight() {
+ const material = useMemo(() => new ShaderMaterial({
+  uniforms: { uTime: { value: 0 } },
+  vertexShader: `varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
+  fragmentShader: `uniform float uTime; varying vec2 vUv;
+   void main() {
+    vec2 p = vUv * 18.0;
+    float a = sin(p.x * 1.3 + sin(p.y * 0.8 + uTime * 0.25) * 2.0 + uTime * 0.33);
+    float b = sin(p.y * 1.5 + sin(p.x * 0.7 - uTime * 0.31) * 1.8 - uTime * 0.24);
+    float c = sin((p.x+p.y) * 0.8 + uTime * 0.19);
+    float lines = pow(max(0.0, (a+b+c)/3.0), 8.0);
+    float fade = smoothstep(0.0,0.16,vUv.x) * smoothstep(1.0,0.84,vUv.x) *
+                 smoothstep(0.0,0.16,vUv.y) * smoothstep(1.0,0.84,vUv.y);
+    gl_FragColor = vec4(vec3(0.20,0.70,0.81), lines * fade * 0.19);
+   }`,
+  transparent: true, depthWrite: false, blending: AdditiveBlending, side: DoubleSide,
+ }), []);
+ useFrame(({clock}) => { material.uniforms.uTime.value = clock.elapsedTime; });
+ return <mesh position={[0,-2.94,-3]} rotation={[-Math.PI/2,0,0]} material={material}>
+  <planeGeometry args={[37,37,1,1]}/>
+ </mesh>;
+}
 function LightShafts() { return <group>
  {Array.from({length:6},(_,i)=><mesh key={i} position={[(i-2.5)*2.1,1,-4-i*0.3]} rotation={[0,0,0.14+(i%2)*0.08]}><coneGeometry args={[0.8,9,20,1,true]}/><meshBasicMaterial color="#65b9d5" transparent opacity={0.018} depthWrite={false} side={DoubleSide}/></mesh>)}
  </group>; }
@@ -47,6 +69,6 @@ function FictionalOrganisms() { return <>
  </>; }
 export function OceanScene({state}: {state: OceanState}) { return <div className="ocean-canvas" role="img" aria-label="Simulação artística de um oceano hipotético, com sonda subaquática e organismos fictícios luminosos"><Canvas camera={{position:[0,1.3,6.5],fov:52}} dpr={[1,1.6]} gl={{ antialias: true, toneMapping: ACESFilmicToneMapping, outputColorSpace: SRGBColorSpace }}>
   <color attach="background" args={['#031624']}/><fog attach="fog" args={['#06263c',4,21]}/><hemisphereLight args={['#79c8ec','#052031',0.7]}/><ambientLight intensity={0.24} color="#4b9ec9"/><directionalLight position={[2,6,3]} intensity={2.8} color="#83c4e0"/>
-  <Sparkles count={370} scale={[18,10,13]} size={2} speed={0.35} opacity={0.5} color="#89d9e8"/><FictionalOrganisms/><OceanSurface/><LightShafts/><Terrain/><SeafloorSediment/><SeabedDetails/><Submersible heading={state.heading}/>
+  <Sparkles count={370} scale={[18,10,13]} size={2} speed={0.35} opacity={0.5} color="#89d9e8"/><FictionalOrganisms/><OceanSurface/><LightShafts/><Terrain/><CausticLight/><SeafloorSediment/><SeabedDetails/><Submersible heading={state.heading}/>
 
  </Canvas></div>; }
