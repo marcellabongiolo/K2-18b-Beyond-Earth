@@ -117,3 +117,7 @@ A lightweight fragment shader draws moving, refracted-looking light streaks acro
 ## Visual reference: detailed ocean-and-terrain world
 
 The planetary texture now procedurally combines deep blue water, turquoise coastal shallows, irregular fictional landmasses, rocky highlands, pale polar areas, and subtle haze beneath separately rendered cloud layers. This visual direction is inspired by an illustrative user-provided reference. **It is speculative artwork:** no continents, coastlines, surface ocean, or surface photographs of K2-18 b are confirmed. The reference itself is not embedded or redistributed.
+
+## Fine surface details
+
+The procedural planetary art adds finer grain, mountain-like ridges and turquoise coastal color variation to reduce broad smooth color patches. All geography is fictional; no surface maps of K2-18 b are available.
