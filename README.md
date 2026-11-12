@@ -62,3 +62,8 @@ npm run build
 ## License
 
 No license has been selected yet; all rights reserved until one is added.
+
+## Mission 03 — Atmospheric Approach (in development)
+
+Use **Iniciar aproximação** to transition from orbital view to a cinematic close-up of the planet. **Visão orbital** restores the wider perspective. The atmospheric haze is intentionally speculative, not an observed cloud map or proof of oceans or life. This milestone adds a reversible camera transition, visual atmospheric layers and unit tests for flight phase logic.
+
