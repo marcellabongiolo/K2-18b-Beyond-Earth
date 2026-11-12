@@ -1,10 +1,12 @@
 export type SampleRecord = { id:number; depth:number; heading:number; material:string };
 export type Collection = { progress:number; depth:number; heading:number };
-export type OceanState = { depth: number; heading: number; samples: number; distance: number; collection: Collection | null; sampleLog: SampleRecord[] };
-export const initialOcean: OceanState = { depth: 120, heading: 0, samples: 0, distance: 7, collection: null, sampleLog: [] };
-export type OceanAction = 'dive' | 'ascend' | 'turnLeft' | 'turnRight' | 'sample' | 'reset' | 'approach' | 'retreat' | 'sampleTick';
+export type OceanState = { depth: number; heading: number; samples: number; distance: number; collection: Collection | null; sampleLog: SampleRecord[]; lights:boolean; sonarCount:number };
+export const initialOcean: OceanState = { depth: 120, heading: 0, samples: 0, distance: 7, collection: null, sampleLog: [], lights:true, sonarCount:0 };
+export type OceanAction = 'dive' | 'ascend' | 'turnLeft' | 'turnRight' | 'sample' | 'reset' | 'approach' | 'retreat' | 'sampleTick' | 'lights' | 'sonar';
 export function oceanReducer(state: OceanState, action: OceanAction): OceanState {
  switch (action) {
+  case 'lights': return {...state,lights:!state.lights};
+  case 'sonar': return {...state,sonarCount:state.sonarCount+1};
   case 'approach': return { ...state, distance: Math.max(4,state.distance-0.5) };
   case 'retreat': return { ...state, distance: Math.min(12,state.distance+0.5) };
   case 'dive': return { ...state, depth: Math.min(1000, state.depth + 40) };

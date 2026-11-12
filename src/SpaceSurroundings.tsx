@@ -1,9 +1,10 @@
+import type { SpaceTargetId } from './exploration';
 import { Html } from '@react-three/drei';
 import { useEffect, useMemo } from 'react';
 import { AdditiveBlending, BufferAttribute, BufferGeometry, Color, ShaderMaterial } from 'three';
 
 /** Known objects, artistic appearance and positions. Not a sky ephemeris. */
-export function SpaceSurroundings(){
+export function SpaceSurroundings({onSelect}:{onSelect:(id:SpaceTargetId)=>void}){
  const band=useMemo(()=>{
   const g=new BufferGeometry(),positions=new Float32Array(1800*3),colors=new Float32Array(1800*3);
   for(let i=0;i<1800;i++){
@@ -35,13 +36,13 @@ export function SpaceSurroundings(){
  return <group>
   <points geometry={band} rotation={[.42,0,.35]}><pointsMaterial size={.10} vertexColors transparent opacity={.7} depthWrite={false} sizeAttenuation/></points>
   <group position={[-6,3.5,-13]}>
-   <mesh material={star}><sphereGeometry args={[.85,40,24]}/></mesh>
+   <mesh material={star} onClick={e=>{e.stopPropagation();onSelect('star');}}><sphereGeometry args={[.85,40,24]}/></mesh>
 
    <mesh material={halo}><planeGeometry args={[5,5]}/></mesh>
    <Html occlude position={[0,-1.25,0]} center style={{pointerEvents:'none'}}><span className='space-label'>K2-18 · estrela</span></Html>
   </group>
   <group position={[5,2.6,-9]}>
-   <mesh material={companion}><sphereGeometry args={[.48,40,24]}/></mesh>
+   <mesh material={companion} onClick={e=>{e.stopPropagation();onSelect('c');}}><sphereGeometry args={[.48,40,24]}/></mesh>
    <Html occlude position={[0,-.85,0]} center style={{pointerEvents:'none'}}><span className='space-label'>K2-18 c</span></Html>
   </group>
  </group>;
