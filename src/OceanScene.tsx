@@ -1,6 +1,5 @@
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float, Sparkles } from '@react-three/drei';
-import { useRef } from 'react';
 import { Group, PlaneGeometry, DoubleSide, ACESFilmicToneMapping, SRGBColorSpace } from 'three';
 import { useMemo, useRef } from 'react';
 import type { OceanState } from './ocean';
