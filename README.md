@@ -101,3 +101,7 @@ A gently animated translucent plane and physically based materials add a sense o
 ## Layered atmospheric motion
 
 A separate thin high-altitude visual cloud layer rotates at a different speed from the lower layer, increasing perceived depth. This is procedural science-fiction artwork and does not represent confirmed atmospheric structures of K2-18 b.
+
+## Underwater scale cues
+
+The hypothetical seabed now contains scattered small mineral-like grains to improve the perception of distance and scale. These details are procedural visual fiction and are not measurements or images from K2-18 b.
