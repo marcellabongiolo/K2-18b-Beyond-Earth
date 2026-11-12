@@ -12,3 +12,15 @@ export function oceanReducer(state: OceanState, action: OceanAction): OceanState
  }
 }
 export function oceanZone(depth: number): string { return depth < 200 ? 'ZONA CREPUSCULAR FICTÍCIA' : depth < 600 ? 'ABISMO AZUL FICTÍCIO' : 'ZONA PROFUNDA FICTÍCIA'; }
+
+/** Art direction in virtual units, not measured conditions on the exoplanet. */
+export function oceanEnvironment(depth: number) {
+ const fraction = Math.max(0, Math.min(1, depth / 1000));
+ return { fraction, sunlight: 2.6 * Math.exp(-fraction * 4),
+  visibility: 24 - fraction * 13, surfaceHeight: 4 + fraction * 18,
+  floorHeight: -4 + fraction * 1.2 };
+}
+export function seabedHeight(x: number, z: number) {
+ return Math.sin(x * 0.38) * Math.cos(z * 0.31) * 0.6
+  + Math.sin(x * 1.1 + z * 0.43) * 0.12 + Math.cos(z * 1.6 - x * 0.6) * 0.055;
+}
