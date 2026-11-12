@@ -10,7 +10,7 @@ function Submersible({ heading }: { heading: number }) {
   <mesh><capsuleGeometry args={[0.35,1.1,8,16]}/><meshStandardMaterial color="#d8e8f2" metalness={0.72} roughness={0.22}/></mesh>
   <mesh position={[0,0.08,0.4]}><sphereGeometry args={[0.26,24,16]}/><meshStandardMaterial color="#1d8bb8" emissive="#07577d" emissiveIntensity={0.45} metalness={0.35}/></mesh>
   {[-1,1].map(side=><mesh key={side} position={[side*0.55,-0.2,0]}><boxGeometry args={[0.5,0.08,0.72]}/><meshStandardMaterial color="#9db9c8" metalness={0.7}/></mesh>)}
-  <spotLight position={[0,-0.1,1]} target-position={[0,-0.2,4]} angle={0.35} penumbra={0.85} intensity={15} color="#8eeaff" distance={12}/>
+  <spotLight position={[0,-0.1,1]} angle={0.35} penumbra={0.85} intensity={15} color="#8eeaff" distance={12}/>
   <pointLight position={[0,0.4,0]} intensity={3} color="#4cc8f4" distance={6}/>
  </group>;
 }
