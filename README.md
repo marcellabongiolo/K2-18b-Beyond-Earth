@@ -113,3 +113,7 @@ The planet now uses a custom view-dependent atmospheric rim shader instead of fl
 ## Animated underwater caustics
 
 A lightweight fragment shader draws moving, refracted-looking light streaks across the fictional seabed. This is an artistic approximation rather than a physically correct simulation of water optics. K2-18 b's ocean and seabed remain unconfirmed.
+
+## Visual reference: detailed ocean-and-terrain world
+
+The planetary texture now procedurally combines deep blue water, turquoise coastal shallows, irregular fictional landmasses, rocky highlands, pale polar areas, and subtle haze beneath separately rendered cloud layers. This visual direction is inspired by an illustrative user-provided reference. **It is speculative artwork:** no continents, coastlines, surface ocean, or surface photographs of K2-18 b are confirmed. The reference itself is not embedded or redistributed.
