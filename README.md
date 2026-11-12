@@ -125,3 +125,7 @@ The procedural planetary art adds finer grain, mountain-like ridges and turquois
 ## Fictional life during approach
 
 Selecting **Iniciar aproximação** reveals a small group of imagined gliding creatures in the foreground of the simulated atmosphere. Returning to orbital view hides them. This is speculative science-fiction storytelling, **not evidence of life** on K2-18 b. The ocean mode retains its own imaginary organisms.
+
+## Animated fictional gliders
+
+During the approach, seven fictional airborne creatures now flap their wings, bank, drift and vary in size with deterministic motion. They are a narrative element, not a scientific claim about extraterrestrial biology.
