@@ -97,3 +97,7 @@ Orbital and underwater renderers use ACES filmic tone mapping, sRGB output and m
 ## Materials and water surface
 
 A gently animated translucent plane and physically based materials add a sense of an overhead water surface and seabed texture in the hypothetical ocean. Planetary cloud transparency and atmospheric rim were also refined. These are visual effects only: no actual ocean, surface features, or life on K2-18 b have been confirmed.
+
+## Layered atmospheric motion
+
+A separate thin high-altitude visual cloud layer rotates at a different speed from the lower layer, increasing perceived depth. This is procedural science-fiction artwork and does not represent confirmed atmospheric structures of K2-18 b.
