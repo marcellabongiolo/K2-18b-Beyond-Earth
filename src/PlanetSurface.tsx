@@ -1,0 +1,16 @@
+import { useMemo, useRef } from 'react';
+import { useFrame } from '@react-three/fiber';
+import { AdditiveBlending, BackSide, CanvasTexture, Group, SRGBColorSpace } from 'three';
+import { createPlanetTexture } from './planetTexture';
+/** Fictional atmospheric appearance, deliberately not a scientific reconstruction. */
+export function PlanetSurface() {
+ const surface = useRef<Group>(null), clouds = useRef<Group>(null);
+ const texture = useMemo(() => { const t = new CanvasTexture(createPlanetTexture()); t.colorSpace = SRGBColorSpace; t.anisotropy = 4; return t; }, []);
+ useFrame((_, delta) => { if (surface.current) surface.current.rotation.y += delta * 0.018; if (clouds.current) clouds.current.rotation.y += delta * 0.027; });
+ return <group rotation={[0.17, 0, -0.12]}>
+  <group ref={surface}><mesh><sphereGeometry args={[1.7, 128, 96]}/><meshStandardMaterial map={texture} roughness={0.88} metalness={0}/></mesh></group>
+  <group ref={clouds}><mesh rotation={[0,0.35,0]}><sphereGeometry args={[1.727, 128, 96]}/><meshStandardMaterial map={texture} color="#b3d5e6" transparent opacity={0.16} roughness={1} depthWrite={false}/></mesh></group>
+  <mesh><sphereGeometry args={[1.81,96,64]}/><meshBasicMaterial color="#58b6f0" transparent opacity={0.12} side={BackSide} blending={AdditiveBlending} depthWrite={false}/></mesh>
+  <mesh><sphereGeometry args={[1.91,96,64]}/><meshBasicMaterial color="#2b80b4" transparent opacity={0.045} side={BackSide} blending={AdditiveBlending} depthWrite={false}/></mesh>
+ </group>;
+}
