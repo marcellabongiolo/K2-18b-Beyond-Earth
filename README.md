@@ -2,7 +2,7 @@
 
 ## 🌌 Explore the interactive experience
 
-**[🚀 OPEN THE LIVE 3D EXPERIENCE](https://marcellabongiolo.github.io/K2-18b-Beyond-Earth/)](https://marcellabongiolo.github.io/K2-18b-Beyond-Earth/)**
+**[🚀 OPEN THE LIVE 3D EXPERIENCE](https://marcellabongiolo.github.io/K2-18b-Beyond-Earth/)**
 
 Visit the interactive planet, pilot the AURORA-01 probe, experience atmospheric approach, and explore a fictional underwater environment. The site is deployed automatically via GitHub Actions after GitHub Pages is enabled in **Settings → Pages → Source: GitHub Actions**.
 
