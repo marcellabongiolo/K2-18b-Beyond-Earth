@@ -122,7 +122,7 @@ function OceanWorld({state}:{state:OceanState}) {
  const world=useRef<Group>(null);
  useFrame(({camera,clock},delta)=>{
   if(world.current){const target=-state.heading*Math.PI/180;const difference=Math.atan2(Math.sin(target-world.current.rotation.y),Math.cos(target-world.current.rotation.y));world.current.rotation.y+=difference*(1-Math.exp(-delta*1.5));}
-  camera.position.y=1+Math.sin(clock.elapsedTime*.17)*.045;camera.lookAt(1,-.65,-6);
+  camera.position.z+=(state.distance-camera.position.z)*(1-Math.exp(-delta*2.5));camera.position.y=1+Math.sin(clock.elapsedTime*.17)*.045;camera.lookAt(1,-.65,-6);
  });
  return <><Lighting depth={state.depth}/><group ref={world}><Seabed depth={state.depth}/><WaterCeiling depth={state.depth}/><Rocks depth={state.depth}/>
   <Sparkles count={180} scale={[24,12,28]} position={[0,0,-8]} size={1.2} speed={.16} opacity={.24} color='#a5cfd0'/>
@@ -132,4 +132,5 @@ function OceanWorld({state}:{state:OceanState}) {
 export function OceanScene({state}:{state:OceanState}) {
  return <div className='ocean-canvas' role='img' aria-label='Oceano hipotético com relevo, luz filtrada, submersível e organismos fictícios. Profundidade e rumo alteram a cena.'><Canvas camera={{position:[0,1,7],fov:52,near:.1,far:80}} dpr={[1,1.5]} gl={{antialias:true,toneMapping:ACESFilmicToneMapping,outputColorSpace:SRGBColorSpace}}><OceanWorld state={state}/></Canvas></div>;
 }
+
 

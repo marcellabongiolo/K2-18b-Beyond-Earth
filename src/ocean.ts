@@ -1,8 +1,10 @@
-export type OceanState = { depth: number; heading: number; samples: number };
-export const initialOcean: OceanState = { depth: 120, heading: 0, samples: 0 };
-export type OceanAction = 'dive' | 'ascend' | 'turnLeft' | 'turnRight' | 'sample' | 'reset';
+export type OceanState = { depth: number; heading: number; samples: number; distance: number };
+export const initialOcean: OceanState = { depth: 120, heading: 0, samples: 0, distance: 7 };
+export type OceanAction = 'dive' | 'ascend' | 'turnLeft' | 'turnRight' | 'sample' | 'reset' | 'approach' | 'retreat';
 export function oceanReducer(state: OceanState, action: OceanAction): OceanState {
  switch (action) {
+  case 'approach': return { ...state, distance: Math.max(4,state.distance-0.5) };
+  case 'retreat': return { ...state, distance: Math.min(12,state.distance+0.5) };
   case 'dive': return { ...state, depth: Math.min(1000, state.depth + 40) };
   case 'ascend': return { ...state, depth: Math.max(0, state.depth - 40) };
   case 'turnLeft': return { ...state, heading: (state.heading + 345) % 360 };
@@ -24,3 +26,4 @@ export function seabedHeight(x: number, z: number) {
  return Math.sin(x * 0.38) * Math.cos(z * 0.31) * 0.6
   + Math.sin(x * 1.1 + z * 0.43) * 0.12 + Math.cos(z * 1.6 - x * 0.6) * 0.055;
 }
+
