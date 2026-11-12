@@ -45,7 +45,7 @@ function App() {
   const [probeVisible, setProbeVisible] = useState(true);
   const [mission, dispatch] = useReducer(nextMission, initialMission);
   const signal = telemetry(mission.distance);
-  return <main className="mission">
+  return <main className={oceanMode ? "mission ocean-active" : "mission"}>
     <div className="viewport" aria-label="Visualização artística interativa em três dimensões do exoplaneta K2-18 b">{oceanMode ? <OceanScene state={ocean} /> : <SpaceScene probeVisible={probeVisible} phase={phase} />}</div>
     <header className="topbar"><span className="brand">BEYOND <b>EARTH</b></span><span className="mission-tag">MISSION 04 / HYPOTHETICAL OCEAN</span></header>
     <section className="hero" hidden={oceanMode}><div className="eyebrow">EXOPLANETARY EXPLORATION PROGRAM</div><h1>K2-18 <em>b</em></h1><p>Um mundo distante. Perguntas extraordinárias.</p><div className="chips"><span>{EXOPLANET.distanceLightYearsApprox} anos-luz (aprox.)</span><span>{EXOPLANET.massEarths} massas terrestres</span></div></section>
@@ -55,3 +55,4 @@ function App() {
 }
 
 createRoot(document.getElementById('root')!).render(<React.StrictMode><App /></React.StrictMode>);
+
