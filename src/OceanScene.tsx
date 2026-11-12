@@ -14,11 +14,11 @@ function Submersible({ heading }: { heading: number }) {
   <pointLight position={[0,0.4,0]} intensity={3} color="#4cc8f4" distance={6}/>
  </group>;
 }
-function FictionalOrganisms() { return <>
+function SeabedDetails() { return <group>\n {Array.from({length:34},(_,i)=>{const x=((i*17)%29-14)*0.72, z=-1-(i*11%19)*0.55, size=0.18+(i%5)*0.13;return <mesh key={i} position={[x,-2.97+size*0.2,z]} rotation={[0,i*1.37,0]}><dodecahedronGeometry args={[size,0]}/><meshStandardMaterial color={i%3===0?'#245966':'#173d4b'} roughness={1}/></mesh>;})}\n {Array.from({length:9},(_,i)=><group key={i} position={[(i-4)*1.9,-2.92,-4-(i%3)]}><mesh><cylinderGeometry args={[0.06,0.23,0.8+(i%3)*0.3,7]}/><meshStandardMaterial color='#245763' roughness={0.95}/></mesh><pointLight position={[0,0.65,0]} intensity={0.7} color='#35b4aa' distance={2}/></group>)}\n </group>; }\nfunction FictionalOrganisms() { return <>
  {Array.from({length:12},(_,i)=><Float key={i} speed={0.7+(i%3)*0.2} floatIntensity={0.65} rotationIntensity={0.2}><mesh position={[(i%4-1.5)*2.1,Math.sin(i*2)*1.6-0.4,-2-(i%3)*1.4]}><icosahedronGeometry args={[0.1+(i%3)*0.07,1]}/><meshStandardMaterial color={i%2?'#73f7df':'#84aaff'} emissive={i%2?'#1ed6b3':'#446cf4'} emissiveIntensity={2.2} transparent opacity={0.85}/></mesh></Float>)}
  </>; }
 export function OceanScene({state}: {state: OceanState}) { return <div className="ocean-canvas" role="img" aria-label="Simulação artística de um oceano hipotético, com sonda subaquática e organismos fictícios luminosos"><Canvas camera={{position:[0,1.3,6.5],fov:52}} dpr={[1,1.6]}>
-  <color attach="background" args={['#031624']}/><fog attach="fog" args={['#06263c',3,17]}/><ambientLight intensity={0.32} color="#4b9ec9"/><directionalLight position={[2,6,3]} intensity={2.1} color="#4b9ed5"/>
-  <Sparkles count={210} scale={[18,10,13]} size={2} speed={0.35} opacity={0.5} color="#89d9e8"/><FictionalOrganisms/><Submersible heading={state.heading}/>
+  <color attach="background" args={['#031624']}/><fog attach="fog" args={['#06263c',3,17]}/><hemisphereLight args={['#79c8ec','#052031',0.7]}/><ambientLight intensity={0.24} color="#4b9ec9"/><directionalLight position={[2,6,3]} intensity={2.1} color="#4b9ed5"/>
+  <Sparkles count={310} scale={[18,10,13]} size={2} speed={0.35} opacity={0.5} color="#89d9e8"/><FictionalOrganisms/><SeabedDetails/><Submersible heading={state.heading}/>
   <mesh position={[0,-3.1,-3]} rotation={[-Math.PI/2,0,0]}><planeGeometry args={[40,40,30,30]}/><meshStandardMaterial color="#0c394b" roughness={0.94}/></mesh>
  </Canvas></div>; }
