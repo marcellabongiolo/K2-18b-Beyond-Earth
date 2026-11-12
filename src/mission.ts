@@ -8,3 +8,9 @@ export function nextMission(state: MissionState, action: 'approach' | 'retreat' 
   return { ...state, distance, mode: distance < 5 ? 'approach' : 'orbital' };
 }
 export function telemetry(distance: number) { return { signal: Math.max(0, Math.min(100, Math.round(100 - (distance - 3.5) * 7))), distanceDisplay: distance.toFixed(1) }; }
+
+/** Camera radius in artistic scene units; approach stays outside fictional fauna. */
+export function spaceCameraDistance(distance:number,phase:'orbit'|'descent') {
+ const bounded=Math.max(3.5,Math.min(12,distance));
+ return phase==='descent'?2.65+(bounded-6)*.06:bounded;
+}
