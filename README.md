@@ -85,3 +85,7 @@ Switch to **Oceano hipotético** to enter a fictional underwater environment. Pi
 ## Visual fidelity upgrade
 
 The orbital view now uses deterministic, procedurally generated color variation and drifting atmospheric layers, rather than a flat blue sphere. The speculative underwater environment includes a detailed rocky floor, mineral-like formations, and richer suspended particles. These are **fictional artistic details**, not observed terrain, atmospheric imagery, or life on K2-18 b. The texture is generated in the browser without downloading satellite or telescope images.
+
+## Cinematic realism pass (visual only)
+
+The planet gains finer multi-scale atmospheric turbulence and a stylized cyclonic feature. The underwater scene gains a sculpted 3D seabed and translucent light shafts. These are **procedural artistic approximations**, not observed images or a physically validated rendering of K2-18 b. The hypothetical ocean and organisms remain entirely fictional.
