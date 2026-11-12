@@ -8,7 +8,7 @@ function Galaxy({position,scale,angle}:{position:[number,number,number];scale:nu
  const material=useMemo(()=>new ShaderMaterial({transparent:true,depthWrite:false,blending:AdditiveBlending,
   uniforms:{angle:{value:angle}},
   vertexShader:`varying vec2 v;void main(){v=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
-  fragmentShader:`varying vec2 v;uniform float angle;void main(){vec2 q=(v-.5)*2.;q=mat2(cos(angle),-sin(angle),sin(angle),cos(angle))*q;q.y*=1.8;float r=length(q);float a=atan(q.y,q.x);float arms=pow(.5+.5*cos(a*3.-r*13.),4.);float disk=exp(-r*4.)*(1.-smoothstep(.2,1.,r));float core=exp(-r*24.);float dust=.7+.3*sin(q.x*167.+sin(q.y*123.));vec3 color=vec3(.28,.40,.64)*disk*(.3+arms)*dust+vec3(1.,.79,.5)*core;gl_FragColor=vec4(color,clamp(disk*.7+core,0.,1.));}`,
+  fragmentShader:`varying vec2 v;uniform float angle;void main(){vec2 q=(v-.5)*2.;q=mat2(cos(angle),-sin(angle),sin(angle),cos(angle))*q;q.y*=1.8;float r=length(q);float a=atan(q.y,q.x);float arms=pow(.5+.5*cos(a*3.-r*13.),4.);float disk=exp(-r*4.)*(1.-smoothstep(.2,1.,r));float core=exp(-r*24.);float dust=.7+.3*sin(q.x*167.+sin(q.y*123.));vec3 color=vec3(.28,.40,.64)*disk*(1.2+arms*3.5)*dust*2.+vec3(1.,.79,.5)*core;gl_FragColor=vec4(color,clamp(disk*1.4+core,0.,1.));}`,
  }),[angle]);
  useEffect(()=>()=>material.dispose(),[material]);
  return <Billboard position={position}><mesh material={material} scale={[scale,scale,1]}><planeGeometry args={[1,1]}/></mesh></Billboard>;
@@ -16,7 +16,7 @@ function Galaxy({position,scale,angle}:{position:[number,number,number];scale:nu
 function DustVeil(){
  const material=useMemo(()=>new ShaderMaterial({transparent:true,depthWrite:false,blending:AdditiveBlending,
   vertexShader:`varying vec2 v;void main(){v=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
-  fragmentShader:`varying vec2 v;float n(vec2 p){return sin(p.x+sin(p.y*1.7))*sin(p.y*.7+sin(p.x*1.3));}void main(){vec2 p=v*9.;float f=n(p)*.5+n(p*2.1)*.2+n(p*4.3)*.1;float band=exp(-pow((v.y-.5+sin(v.x*8.)*.12)*7.,2.));float edge=smoothstep(0.,.2,v.x)*(1.-smoothstep(.8,1.,v.x));float a=band*edge*(.5+f)*.19;gl_FragColor=vec4(mix(vec3(.11,.19,.37),vec3(.41,.23,.20),v.x),a);}`,
+  fragmentShader:`varying vec2 v;float n(vec2 p){return sin(p.x+sin(p.y*1.7))*sin(p.y*.7+sin(p.x*1.3));}void main(){vec2 p=v*9.;float f=n(p)*.5+n(p*2.1)*.2+n(p*4.3)*.1;float band=exp(-pow((v.y-.5+sin(v.x*8.)*.12)*7.,2.));float edge=smoothstep(0.,.2,v.x)*(1.-smoothstep(.8,1.,v.x));float a=band*edge*(.5+f)*.38;gl_FragColor=vec4(mix(vec3(.11,.19,.37),vec3(.41,.23,.20),v.x),a);}`,
  }),[]);
  useEffect(()=>()=>material.dispose(),[material]);
  return <Billboard position={[0,0,-85]}><mesh material={material} rotation={[0,0,.3]}><planeGeometry args={[150,90]}/></mesh></Billboard>;
@@ -44,5 +44,6 @@ function Comet(){
   <Billboard><mesh position={[-.85,.08,0]} rotation={[0,0,-.08]}><planeGeometry args={[1.8,.25]}/><shaderMaterial transparent depthWrite={false} blending={AdditiveBlending} vertexShader={'varying vec2 v;void main(){v=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}'} fragmentShader={'varying vec2 v;void main(){float a=pow(v.x,2.)*exp(-pow((v.y-.5)*7.,2.));gl_FragColor=vec4(.35,.65,.85,a*.23);}'}/></mesh></Billboard>
  </group>;
 }
-export function CosmicScenery(){return <group><DustVeil/><Galaxy position={[-20,9,-65]} scale={15} angle={.4}/><Galaxy position={[24,-9,-75]} scale={11} angle={-.6}/><Galaxy position={[13,19,-80]} scale={7} angle={1.2}/><Debris/><Comet/></group>;}
+export function CosmicScenery(){return <group><DustVeil/><Galaxy position={[-23,13,-58]} scale={23} angle={.4}/><Galaxy position={[25,-14,-65]} scale={18} angle={-.6}/><Galaxy position={[10,24,-70]} scale={12} angle={1.2}/><Debris/><Comet/></group>;}
+
 
