@@ -1,0 +1,4 @@
+import { describe, expect, it } from 'vitest';
+import { EXOPLANET, clampZoom, evidenceLabels } from '../src/science';
+describe('scientific integrity', () => { it('does not assert that life has been discovered', () => { expect(EXOPLANET.evidenceStatus).toMatch(/Nenhuma vida.*confirmada/); }); it('separates observations, hypotheses and simulations', () => { expect(new Set(Object.values(evidenceLabels)).size).toBe(3); }); });
+describe('camera limits', () => { it('keeps zoom within safe limits', () => { expect(clampZoom(-4)).toBe(3.3); expect(clampZoom(99)).toBe(13); expect(clampZoom(7)).toBe(7); }); it('handles invalid zoom inputs', () => { expect(clampZoom(Number.NaN)).toBe(6); }); });
