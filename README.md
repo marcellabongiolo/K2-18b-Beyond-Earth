@@ -121,3 +121,7 @@ The planetary texture now procedurally combines deep blue water, turquoise coast
 ## Fine surface details
 
 The procedural planetary art adds finer grain, mountain-like ridges and turquoise coastal color variation to reduce broad smooth color patches. All geography is fictional; no surface maps of K2-18 b are available.
+
+## Fictional life during approach
+
+Selecting **Iniciar aproximação** reveals a small group of imagined gliding creatures in the foreground of the simulated atmosphere. Returning to orbital view hides them. This is speculative science-fiction storytelling, **not evidence of life** on K2-18 b. The ocean mode retains its own imaginary organisms.
