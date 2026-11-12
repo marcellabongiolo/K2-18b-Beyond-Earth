@@ -2,6 +2,16 @@
 
 **Mission 01 — Orbital Reconnaissance** · A cinematic, science-aware exoplanet exploration experience.
 
+## Mission 02 — Probe Telemetry (in development)
+
+- Stylized 3D reconnaissance probe with solar panels and animated drift.
+- Interactive approach/retreat, visibility toggle and scan progress.
+- Illustrative signal telemetry and safe distance limits.
+- No fabricated evidence of extraterrestrial life: the scan explicitly states that life is unconfirmed.
+- Additional deterministic unit tests for mission navigation.
+
+**Note:** Probe telemetry, distance units, and scan progress are fictional interface elements, not measurements from K2-18 b.
+
 ## Features
 
 - Interactive 3D planet with atmospheric layers and cinematic lighting.
@@ -39,7 +49,7 @@ npm run build
 ## Roadmap
 
 1. Orbital Reconnaissance — first implementation.
-2. Atmospheric Entry — planned.
+2. Probe Telemetry — implementation in progress; atmospheric entry planned next.
 3. Ocean Probe — hypothetical environment and pilotable probe, planned.
 4. Astrobiology Lab — observations and uncertainty, planned.
 5. Onboard AI — scientifically grounded copilot, planned.
