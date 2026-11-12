@@ -93,3 +93,7 @@ The planet gains finer multi-scale atmospheric turbulence and a stylized cycloni
 ## Cinematic lighting pass
 
 Orbital and underwater renderers use ACES filmic tone mapping, sRGB output and more directional lighting to improve contrast and depth. Visuals are artistic simulations, not actual images of K2-18 b; oceans and life have not been confirmed.
+
+## Materials and water surface
+
+A gently animated translucent plane and physically based materials add a sense of an overhead water surface and seabed texture in the hypothetical ocean. Planetary cloud transparency and atmospheric rim were also refined. These are visual effects only: no actual ocean, surface features, or life on K2-18 b have been confirmed.

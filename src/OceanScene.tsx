@@ -1,8 +1,7 @@
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float, Sparkles } from '@react-three/drei';
-import { useRef } from 'react';
 import { Group, PlaneGeometry, DoubleSide, ACESFilmicToneMapping, SRGBColorSpace } from 'three';
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 import type { OceanState } from './ocean';
 function Submersible({ heading }: { heading: number }) {
  const group = useRef<Group>(null);
@@ -15,6 +14,11 @@ function Submersible({ heading }: { heading: number }) {
   <pointLight position={[0,0.4,0]} intensity={3} color="#4cc8f4" distance={6}/>
  </group>;
 }
+function OceanSurface() {
+ const surface = useRef<Group>(null);
+ useFrame(({clock})=>{if(surface.current){surface.current.position.y=2.6+Math.sin(clock.elapsedTime*0.38)*0.06;surface.current.rotation.z=Math.sin(clock.elapsedTime*0.17)*0.012;}});
+ return <group ref={surface} position={[0,2.6,0]}><mesh rotation={[-Math.PI/2,0,0]}><planeGeometry args={[40,40,50,50]}/><meshPhysicalMaterial color='#1e667a' transparent opacity={0.28} roughness={0.17} metalness={0.08} clearcoat={0.9} clearcoatRoughness={0.13} side={DoubleSide} depthWrite={false}/></mesh></group>;
+}
 function Terrain() {
  const geometry = useMemo(() => {
   const g = new PlaneGeometry(44, 44, 72, 72);
@@ -26,7 +30,7 @@ function Terrain() {
   }
   g.computeVertexNormals(); return g;
  }, []);
- return <mesh position={[0,-3.05,-3]} rotation={[-Math.PI/2,0,0]} geometry={geometry}><meshStandardMaterial color="#123c47" roughness={0.97} side={DoubleSide}/></mesh>;
+ return <mesh position={[0,-3.05,-3]} rotation={[-Math.PI/2,0,0]} geometry={geometry}><meshStandardMaterial color="#123c47" roughness={0.97} metalness={0.03} flatShading side={DoubleSide}/></mesh>;
 }
 function LightShafts() { return <group>
  {Array.from({length:6},(_,i)=><mesh key={i} position={[(i-2.5)*2.1,1,-4-i*0.3]} rotation={[0,0,0.14+(i%2)*0.08]}><coneGeometry args={[0.8,9,20,1,true]}/><meshBasicMaterial color="#65b9d5" transparent opacity={0.018} depthWrite={false} side={DoubleSide}/></mesh>)}
@@ -40,6 +44,6 @@ function FictionalOrganisms() { return <>
  </>; }
 export function OceanScene({state}: {state: OceanState}) { return <div className="ocean-canvas" role="img" aria-label="Simulação artística de um oceano hipotético, com sonda subaquática e organismos fictícios luminosos"><Canvas camera={{position:[0,1.3,6.5],fov:52}} dpr={[1,1.6]} gl={{ antialias: true, toneMapping: ACESFilmicToneMapping, outputColorSpace: SRGBColorSpace }}>
   <color attach="background" args={['#031624']}/><fog attach="fog" args={['#06263c',4,21]}/><hemisphereLight args={['#79c8ec','#052031',0.7]}/><ambientLight intensity={0.24} color="#4b9ec9"/><directionalLight position={[2,6,3]} intensity={2.8} color="#83c4e0"/>
-  <Sparkles count={370} scale={[18,10,13]} size={2} speed={0.35} opacity={0.5} color="#89d9e8"/><FictionalOrganisms/><LightShafts/><Terrain/><SeabedDetails/><Submersible heading={state.heading}/>
+  <Sparkles count={370} scale={[18,10,13]} size={2} speed={0.35} opacity={0.5} color="#89d9e8"/><FictionalOrganisms/><OceanSurface/><LightShafts/><Terrain/><SeabedDetails/><Submersible heading={state.heading}/>
 
  </Canvas></div>; }
