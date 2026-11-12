@@ -1,7 +1,7 @@
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float, Sparkles } from '@react-three/drei';
 import { useRef } from 'react';
-import { Group, PlaneGeometry, DoubleSide } from 'three';
+import { Group, PlaneGeometry, DoubleSide, ACESFilmicToneMapping, SRGBColorSpace } from 'three';
 import { useMemo } from 'react';
 import type { OceanState } from './ocean';
 function Submersible({ heading }: { heading: number }) {
@@ -38,8 +38,8 @@ function SeabedDetails() { return <group>
 function FictionalOrganisms() { return <>
  {Array.from({length:12},(_,i)=><Float key={i} speed={0.7+(i%3)*0.2} floatIntensity={0.65} rotationIntensity={0.2}><mesh position={[(i%4-1.5)*2.1,Math.sin(i*2)*1.6-0.4,-2-(i%3)*1.4]}><icosahedronGeometry args={[0.1+(i%3)*0.07,1]}/><meshStandardMaterial color={i%2?'#73f7df':'#84aaff'} emissive={i%2?'#1ed6b3':'#446cf4'} emissiveIntensity={2.2} transparent opacity={0.85}/></mesh></Float>)}
  </>; }
-export function OceanScene({state}: {state: OceanState}) { return <div className="ocean-canvas" role="img" aria-label="Simulação artística de um oceano hipotético, com sonda subaquática e organismos fictícios luminosos"><Canvas camera={{position:[0,1.3,6.5],fov:52}} dpr={[1,1.6]}>
-  <color attach="background" args={['#031624']}/><fog attach="fog" args={['#06263c',3,17]}/><hemisphereLight args={['#79c8ec','#052031',0.7]}/><ambientLight intensity={0.24} color="#4b9ec9"/><directionalLight position={[2,6,3]} intensity={2.1} color="#4b9ed5"/>
-  <Sparkles count={310} scale={[18,10,13]} size={2} speed={0.35} opacity={0.5} color="#89d9e8"/><FictionalOrganisms/><LightShafts/><Terrain/><SeabedDetails/><Submersible heading={state.heading}/>
+export function OceanScene({state}: {state: OceanState}) { return <div className="ocean-canvas" role="img" aria-label="Simulação artística de um oceano hipotético, com sonda subaquática e organismos fictícios luminosos"><Canvas camera={{position:[0,1.3,6.5],fov:52}} dpr={[1,1.6]} gl={{ antialias: true, toneMapping: ACESFilmicToneMapping, outputColorSpace: SRGBColorSpace }}>
+  <color attach="background" args={['#031624']}/><fog attach="fog" args={['#06263c',4,21]}/><hemisphereLight args={['#79c8ec','#052031',0.7]}/><ambientLight intensity={0.24} color="#4b9ec9"/><directionalLight position={[2,6,3]} intensity={2.8} color="#83c4e0"/>
+  <Sparkles count={370} scale={[18,10,13]} size={2} speed={0.35} opacity={0.5} color="#89d9e8"/><FictionalOrganisms/><LightShafts/><Terrain/><SeabedDetails/><Submersible heading={state.heading}/>
 
  </Canvas></div>; }

@@ -1,6 +1,7 @@
 import React, { Suspense, useState, useReducer } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { ACESFilmicToneMapping, SRGBColorSpace } from 'three';
 import { OrbitControls, Stars } from '@react-three/drei';
 import { Vector3 } from 'three';
 import { PlanetSurface } from './PlanetSurface';
@@ -25,11 +26,11 @@ function CinematicCamera({ phase }: { phase: FlightPhase }) {
 }
 
 function SpaceScene({ probeVisible, phase }: { probeVisible: boolean; phase: FlightPhase }) {
-  return <Canvas camera={{ position: [0, 0.15, 6], fov: 43 }} dpr={[1, 1.75]} gl={{ antialias: true }}>
+  return <Canvas camera={{ position: [0, 0.15, 6], fov: 43 }} dpr={[1, 1.75]} gl={{ antialias: true, toneMapping: ACESFilmicToneMapping, outputColorSpace: SRGBColorSpace }}>
     <color attach="background" args={['#030711']} />
-    <ambientLight intensity={0.3} />
-    <directionalLight position={[-5, 3, 5]} intensity={2.4} color="#c5e9ff" />
-    <pointLight position={[5, -3, -2]} intensity={12} color="#3b72a3" />
+    <hemisphereLight args={['#8dbad3','#050d1c',0.28]} /><ambientLight intensity={0.12} />
+    <directionalLight position={[-5, 3, 5]} intensity={3.1} color="#f2f8ff" />
+    <pointLight position={[5, -3, -2]} intensity={4} color="#315f95" />
     <Suspense fallback={null}><PlanetSurface /><Atmosphere active={phase === 'descent'} />{probeVisible && <Probe />}<Stars radius={95} depth={55} count={3000} factor={3} saturation={0} fade speed={0.15} /></Suspense>
     <CinematicCamera phase={phase} /><OrbitControls enabled={phase === "orbit"} enablePan={false} minDistance={3.3} maxDistance={13} autoRotate autoRotateSpeed={0.28} enableDamping dampingFactor={0.045} />
   </Canvas>;

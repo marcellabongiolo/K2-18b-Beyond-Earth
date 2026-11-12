@@ -89,3 +89,7 @@ The orbital view now uses deterministic, procedurally generated color variation 
 ## Cinematic realism pass (visual only)
 
 The planet gains finer multi-scale atmospheric turbulence and a stylized cyclonic feature. The underwater scene gains a sculpted 3D seabed and translucent light shafts. These are **procedural artistic approximations**, not observed images or a physically validated rendering of K2-18 b. The hypothetical ocean and organisms remain entirely fictional.
+
+## Cinematic lighting pass
+
+Orbital and underwater renderers use ACES filmic tone mapping, sRGB output and more directional lighting to improve contrast and depth. Visuals are artistic simulations, not actual images of K2-18 b; oceans and life have not been confirmed.
