@@ -109,3 +109,7 @@ The hypothetical seabed now contains scattered small mineral-like grains to impr
 ## Atmospheric rendering upgrade
 
 The planet now uses a custom view-dependent atmospheric rim shader instead of flat decorative glow rings. Two independently moving translucent cloud shells use a dedicated alpha texture with multi-scale turbulence rather than repeating the planet's surface image. This is a cinematic, procedural approximation—not physically validated radiative transfer or a measured image of K2-18 b.
+
+## Animated underwater caustics
+
+A lightweight fragment shader draws moving, refracted-looking light streaks across the fictional seabed. This is an artistic approximation rather than a physically correct simulation of water optics. K2-18 b's ocean and seabed remain unconfirmed.
