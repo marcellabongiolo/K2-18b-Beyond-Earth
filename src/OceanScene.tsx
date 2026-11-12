@@ -2,7 +2,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { Sparkles } from '@react-three/drei';
 import { useEffect, useMemo, useRef } from 'react';
 import { ACESFilmicToneMapping, AdditiveBlending, Color, DirectionalLight, DoubleSide, Fog, Group, Mesh, Object3D, PlaneGeometry, ShaderMaterial, SRGBColorSpace } from 'three';
-import { oceanEnvironment, seabedHeight, type OceanState } from './ocean';
+import { oceanEnvironment, seabedHeight, type Collection, type OceanState } from './ocean';
 
 const vertex = `varying vec3 vWorld; void main(){vec4 world=modelMatrix*vec4(position,1.);vWorld=world.xyz;gl_Position=projectionMatrix*viewMatrix*world;}`;
 function Seabed({ depth }: { depth: number }) {
@@ -104,7 +104,26 @@ function Swimmer({index}:{index:number}) {
   <mesh ref={tail} position={[0,0,-.43]} rotation={[0,0,Math.PI/2]} scale={[.26,.22,.045]}><coneGeometry args={[1,1,3]}/><meshStandardMaterial color='#4c838e' roughness={.75} side={DoubleSide}/></mesh>
  </group>;
 }
-function Submersible({samples}:{samples:number}) {
+
+function SampleCollector({collection}:{collection:Collection|null}) {
+ const arm=useRef<Group>(null),particles=useRef<Group>(null),ring=useRef<Mesh>(null);
+ const extension=useRef(0);
+ useFrame(({clock},delta)=>{
+  const progress=collection?.progress??0;
+  const target=collection?Math.sin(Math.PI*(.12+progress*.008))*1.1:0;
+  extension.current+=(target-extension.current)*(1-Math.exp(-delta*8));
+  if(arm.current){arm.current.scale.y=.1+extension.current;arm.current.visible=extension.current>.01;}
+  if(particles.current){particles.current.visible=!!collection&&progress>=30&&progress<90;particles.current.rotation.y=clock.elapsedTime*2;particles.current.position.y=-1.3+(progress/100)*1.2;}
+  if(ring.current){ring.current.visible=!!collection;ring.current.scale.setScalar(.4+(progress/100)*1.8);ring.current.rotation.z=clock.elapsedTime*.4;}
+ });
+ return <group position={[-.26,-.2,0]}>
+  <group ref={arm}><mesh position={[0,-.5,0]}><cylinderGeometry args={[.022,.022,1,10]}/><meshStandardMaterial color='#b6c9cb' metalness={.65} roughness={.35}/></mesh><mesh position={[0,-1,0]}><cylinderGeometry args={[.09,.07,.15,12]}/><meshStandardMaterial color='#71b7c0' emissive='#2d9299' emissiveIntensity={.7}/></mesh></group>
+  <group ref={particles}>{Array.from({length:12},(_,i)=><mesh key={i} position={[Math.sin(i*2.4)*.16,(i%4)*.05,Math.cos(i*2.4)*.16]}><sphereGeometry args={[.018,6,5]}/><meshBasicMaterial color='#c9f6d9'/></mesh>)}</group>
+  <mesh ref={ring} rotation={[Math.PI/2,0,0]} position={[0,-.9,0]}><torusGeometry args={[.3,.008,6,40]}/><meshBasicMaterial color='#7ee9d1' transparent opacity={.6} depthWrite={false}/></mesh>
+ </group>;
+}
+
+function Submersible({samples,collection}:{samples:number;collection:Collection|null}) {
  const ref=useRef<Group>(null);
  const beamTarget=useMemo(()=>{const target=new Object3D();target.position.set(0,-2.5,-8);return target;},[]);
  useFrame(({clock})=>{if(ref.current){ref.current.position.y=-.4+Math.sin(clock.elapsedTime*.55)*.06;ref.current.rotation.z=Math.sin(clock.elapsedTime*.4)*.025;}});
@@ -113,6 +132,7 @@ function Submersible({samples}:{samples:number}) {
   <mesh position={[0,.04,.57]} scale={[1,1,.55]}><sphereGeometry args={[.22,24,16]}/><meshPhysicalMaterial color='#164759' roughness={.14} metalness={.4} clearcoat={1}/></mesh>
   {[-1,1].map(side=><group key={side} position={[side*.36,0,-.1]}><mesh rotation={[Math.PI/2,0,0]}><cylinderGeometry args={[.10,.10,.38,16]}/><meshStandardMaterial color='#526d7c' metalness={.6} roughness={.4}/></mesh><mesh position={[0,.05,.4]}><sphereGeometry args={[.055,10,8]}/><meshStandardMaterial color='#dcf9ff' emissive='#a0eaff' emissiveIntensity={2}/></mesh></group>)}
   <mesh position={[0,.3,-.2]}><sphereGeometry args={[.035,10,8]}/><meshStandardMaterial color={samples?'#67e9bb':'#f4b76d'} emissive={samples?'#28bb8a':'#c66a24'} emissiveIntensity={1}/></mesh>
+  <SampleCollector collection={collection}/>
   <primitive object={beamTarget}/>
   <spotLight position={[0,0,.55]} target={beamTarget} color='#b1ebef' intensity={32} angle={.55} penumbra={.8} distance={18}/>
   <pointLight position={[0,.4,.4]} intensity={1.5} color='#8fd7e7' distance={5}/>
@@ -127,7 +147,7 @@ function OceanWorld({state}:{state:OceanState}) {
  return <><Lighting depth={state.depth}/><group ref={world}><Seabed depth={state.depth}/><WaterCeiling depth={state.depth}/><Rocks depth={state.depth}/>
   <Sparkles count={180} scale={[24,12,28]} position={[0,0,-8]} size={1.2} speed={.16} opacity={.24} color='#a5cfd0'/>
   {Array.from({length:7},(_,i)=><Jelly key={i} index={i}/>)}
-  {Array.from({length:18},(_,i)=><Swimmer key={i} index={i}/>)}</group><Submersible samples={state.samples}/></>;
+  {Array.from({length:18},(_,i)=><Swimmer key={i} index={i}/>)}</group><Submersible samples={state.samples} collection={state.collection}/></>;
 }
 export function OceanScene({state}:{state:OceanState}) {
  return <div className='ocean-canvas' role='img' aria-label='Oceano hipotético com relevo, luz filtrada, submersível e organismos fictícios. Profundidade e rumo alteram a cena.'><Canvas camera={{position:[0,1,7],fov:52,near:.1,far:80}} dpr={[1,1.5]} gl={{antialias:true,toneMapping:ACESFilmicToneMapping,outputColorSpace:SRGBColorSpace}}><OceanWorld state={state}/></Canvas></div>;
