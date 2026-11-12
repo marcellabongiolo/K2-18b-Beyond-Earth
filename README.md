@@ -67,3 +67,10 @@ No license has been selected yet; all rights reserved until one is added.
 
 Use **Iniciar aproximação** to transition from orbital view to a cinematic close-up of the planet. **Visão orbital** restores the wider perspective. The atmospheric haze is intentionally speculative, not an observed cloud map or proof of oceans or life. This milestone adds a reversible camera transition, visual atmospheric layers and unit tests for flight phase logic.
 
+
+## Mission 04 — Hypothetical Ocean Exploration
+
+Switch to **Oceano hipotético** to enter a fictional underwater environment. Pilot the AURORA-02 submersible with dive, ascend, left/right rotation, sample collection, and reset controls. Features include animated particles, glowing imaginary organisms, underwater fog, and a stylized submersible. Navigation and sample limits are unit-tested.
+
+**IMPORTANT:** No ocean, underwater life, organisms, or collected samples have been confirmed on K2-18 b. The entire ocean environment is speculative science fiction. Depth uses arbitrary simulation units (U), not meters. The visual scene is an artistic representation, not a validated physical model.
+
