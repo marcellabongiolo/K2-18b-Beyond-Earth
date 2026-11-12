@@ -1,3 +1,11 @@
+/** Blend longitude edges to avoid a visible texture seam on the sphere. */
+export function softenLongitudeSeam(data:Uint8ClampedArray,width:number,height:number,band=48) {
+ const span=Math.min(band,Math.floor(width/2));
+ for(let y=0;y<height;y++)for(let x=0;x<span;x++){
+  const a=(y*width+x)*4,b=(y*width+width-1-x)*4,t=span===1?1:1-x/(span-1);
+  for(let c=0;c<4;c++){const left=data[a+c],right=data[b+c],average=(left+right)/2;data[a+c]=Math.round(left+(average-left)*t);data[b+c]=Math.round(right+(average-right)*t);}
+ }
+}
 /** Deterministic procedural art. Not a map or measured atmosphere of K2-18 b. */
 export function noise2d(x: number, y: number): number {
  const v = Math.sin(x * 127.1 + y * 311.7) * 43758.5453123;
@@ -74,6 +82,7 @@ export function createPlanetTexture(): HTMLCanvasElement {
   }
   pixels.data[i+3]=255;
  }
+ softenLongitudeSeam(pixels.data,canvas.width,canvas.height);
  ctx.putImageData(pixels,0,0);
  return canvas;
 }
@@ -95,6 +104,7 @@ export function createCloudTexture(): HTMLCanvasElement {
   image.data[i] = 191; image.data[i+1] = 222; image.data[i+2] = 238;
   image.data[i+3] = Math.round(density * 205);
  }
+ softenLongitudeSeam(image.data,canvas.width,canvas.height);
  ctx.putImageData(image, 0, 0);
  return canvas;
 }
