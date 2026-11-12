@@ -28,10 +28,10 @@ function Planet() {
 }
 
 function CinematicCamera({ phase }: { phase: FlightPhase }) {
-  const { camera, controls } = useThree();
+  const { camera } = useThree();
   useFrame((_, delta) => {
     if (phase === 'descent') camera.position.lerp(new Vector3(...flightTarget(phase)), transitionFactor(delta));
-    else if (!controls) camera.position.lerp(new Vector3(...flightTarget(phase)), transitionFactor(delta));
+    else if (camera.position.length() < 5.9) camera.position.lerp(new Vector3(...flightTarget(phase)), transitionFactor(delta));
     camera.lookAt(0, 0, 0);
   });
   return null;
