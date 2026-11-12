@@ -5,3 +5,5 @@
 
 .ocean-canvas{position:absolute;inset:0}.ocean-mode-panel,.ocean-panel{position:relative;z-index:2;width:min(460px,90%);margin:4vh 0 0 7%;padding:20px 24px;background:linear-gradient(130deg,#051c2be8,#041221d6);border:1px solid #2c667a;border-radius:8px;backdrop-filter:blur(14px)}.ocean-mode-panel{margin-top:5vh}.ocean-panel h2{font-size:19px;font-weight:400;color:#b3ecf5;letter-spacing:.06em}.ocean-panel p{font-size:12px;line-height:1.6;color:#a8d0dc}.hero[hidden]{display:none}@media(max-width:780px){.ocean-mode-panel,.ocean-panel{margin:5vh 5% 0;width:90%}}
 
+/* Leave an unobstructed observation area above the controls on small screens. */
+@media(max-width:780px){.ocean-active .ocean-mode-panel{margin-top:0}.ocean-active .ocean-panel{margin-top:42vh}.ocean-active .topbar{padding-top:16px;padding-bottom:16px}}
