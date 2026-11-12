@@ -105,3 +105,7 @@ A separate thin high-altitude visual cloud layer rotates at a different speed fr
 ## Underwater scale cues
 
 The hypothetical seabed now contains scattered small mineral-like grains to improve the perception of distance and scale. These details are procedural visual fiction and are not measurements or images from K2-18 b.
+
+## Atmospheric rendering upgrade
+
+The planet now uses a custom view-dependent atmospheric rim shader instead of flat decorative glow rings. Two independently moving translucent cloud shells use a dedicated alpha texture with multi-scale turbulence rather than repeating the planet's surface image. This is a cinematic, procedural approximation—not physically validated radiative transfer or a measured image of K2-18 b.

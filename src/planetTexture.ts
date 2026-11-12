@@ -40,3 +40,25 @@ export function createPlanetTexture(): HTMLCanvasElement {
  }
  ctx.putImageData(pixels, 0, 0); return canvas;
 }
+
+/** Transparent cloud-only map: surface colors no longer get repeated on cloud shells. */
+export function createCloudTexture(): HTMLCanvasElement {
+ const canvas = document.createElement('canvas');
+ canvas.width = 1024; canvas.height = 512;
+ const ctx = canvas.getContext('2d'); if (!ctx) return canvas;
+ const image = ctx.createImageData(canvas.width, canvas.height);
+ for (let y = 0; y < canvas.height; y++) for (let x = 0; x < canvas.width; x++) {
+  const u = x / canvas.width, v = y / canvas.height;
+  const warpedU = u * 11 + Math.sin(v * 22) * 0.13;
+  const warpedV = v * 8 + Math.sin(u * 15) * 0.09;
+  const broad = cloudField(warpedU, warpedV);
+  const detail = cloudField(u * 39, v * 31);
+  const wisps = Math.sin(v * 67 + broad * 12 + Math.sin(u * 25) * 1.6) * 0.085;
+  const density = Math.max(0, Math.min(1, (broad * 0.76 + detail * 0.24 + wisps - 0.35) * 3.5));
+  const i = (y * canvas.width + x) * 4;
+  image.data[i] = 191; image.data[i+1] = 222; image.data[i+2] = 238;
+  image.data[i+3] = Math.round(density * 205);
+ }
+ ctx.putImageData(image, 0, 0);
+ return canvas;
+}
