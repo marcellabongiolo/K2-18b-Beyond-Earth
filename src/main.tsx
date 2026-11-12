@@ -2,7 +2,8 @@ import React, { Suspense, useState, useReducer } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, Stars } from '@react-three/drei';
-import { AdditiveBlending, BackSide, Vector3 } from 'three';
+import { Vector3 } from 'three';
+import { PlanetSurface } from './PlanetSurface';
 import { EXOPLANET, evidenceLabels } from './science';
 import './style.css';
 import { Probe } from './Probe';
@@ -12,22 +13,6 @@ import { flightPhases, flightTarget, transitionFactor, type FlightPhase } from '
 import { OceanScene } from './OceanScene';
 import { initialOcean, oceanReducer, oceanZone } from './ocean';
 
-function Planet() {
-  return <group rotation={[0.17, 0, -0.12]}>
-    <mesh rotation={[0, 0.25, 0]}>
-      <sphereGeometry args={[1.7, 96, 64]} />
-      <meshStandardMaterial color="#18466d" roughness={0.82} metalness={0.02} />
-    </mesh>
-    <mesh rotation={[0, 0.8, 0]}>
-      <sphereGeometry args={[1.725, 96, 64]} />
-      <meshStandardMaterial color="#9fc6dc" transparent opacity={0.17} roughness={1} depthWrite={false} />
-    </mesh>
-    <mesh>
-      <sphereGeometry args={[1.85, 96, 64]} />
-      <meshBasicMaterial color="#58b6f0" transparent opacity={0.095} side={BackSide} blending={AdditiveBlending} depthWrite={false} />
-    </mesh>
-  </group>;
-}
 
 function CinematicCamera({ phase }: { phase: FlightPhase }) {
   const { camera } = useThree();
@@ -45,7 +30,7 @@ function SpaceScene({ probeVisible, phase }: { probeVisible: boolean; phase: Fli
     <ambientLight intensity={0.3} />
     <directionalLight position={[-5, 3, 5]} intensity={2.4} color="#c5e9ff" />
     <pointLight position={[5, -3, -2]} intensity={12} color="#3b72a3" />
-    <Suspense fallback={null}><Planet /><Atmosphere active={phase === 'descent'} />{probeVisible && <Probe />}<Stars radius={95} depth={55} count={3000} factor={3} saturation={0} fade speed={0.15} /></Suspense>
+    <Suspense fallback={null}><PlanetSurface /><Atmosphere active={phase === 'descent'} />{probeVisible && <Probe />}<Stars radius={95} depth={55} count={3000} factor={3} saturation={0} fade speed={0.15} /></Suspense>
     <CinematicCamera phase={phase} /><OrbitControls enabled={phase === "orbit"} enablePan={false} minDistance={3.3} maxDistance={13} autoRotate autoRotateSpeed={0.28} enableDamping dampingFactor={0.045} />
   </Canvas>;
 }
