@@ -46,8 +46,8 @@ function CausticLight() {
     float b = sin(p.y * 1.5 + sin(p.x * 0.7 - uTime * 0.31) * 1.8 - uTime * 0.24);
     float c = sin((p.x+p.y) * 0.8 + uTime * 0.19);
     float lines = pow(max(0.0, (a+b+c)/3.0), 8.0);
-    float fade = smoothstep(0.0,0.16,vUv.x) * smoothstep(1.0,0.84,vUv.x) *
-                 smoothstep(0.0,0.16,vUv.y) * smoothstep(1.0,0.84,vUv.y);
+    float fade = smoothstep(0.0,0.16,vUv.x) * (1.0-smoothstep(0.84,1.0,vUv.x)) *
+                 smoothstep(0.0,0.16,vUv.y) * (1.0-smoothstep(0.84,1.0,vUv.y));
     gl_FragColor = vec4(vec3(0.20,0.70,0.81), lines * fade * 0.19);
    }`,
   transparent: true, depthWrite: false, blending: AdditiveBlending, side: DoubleSide,
