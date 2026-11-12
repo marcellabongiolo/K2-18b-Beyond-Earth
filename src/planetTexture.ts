@@ -27,13 +27,15 @@ export function createPlanetTexture(): HTMLCanvasElement {
   const latitude = Math.abs(v - 0.5) * 2;
   const swirl = Math.sin(v * 38 + Math.sin(u * 24 + v * 17) * 2.5) * 0.12;
   const turbulence = cloudField(u * 9, v * 7);
+  const fineCloud = cloudField(u * 35, v * 25);
+  const vortex = Math.exp(-Math.pow((v - 0.42) * 17, 2) - Math.pow((u - 0.67) * 13, 2)) * Math.sin(Math.atan2(v - 0.42, u - 0.67) * 4 + Math.hypot(u - 0.67, v - 0.42) * 85) * 0.14;
   const bands = Math.sin(v * 56 + turbulence * 10 + Math.sin(u * 13) * 1.3) * 0.1;
-  const haze = Math.max(0, Math.min(1, turbulence * 0.7 + swirl + bands + latitude * 0.08));
+  const haze = Math.max(0, Math.min(1, turbulence * 0.59 + fineCloud * 0.18 + swirl + bands + vortex + latitude * 0.08));
   const polar = Math.max(0, (latitude - 0.8) * 2.5);
   const i = (y * canvas.width + x) * 4;
-  pixels.data[i] = 15 + haze * 57 + polar * 35;
-  pixels.data[i + 1] = 55 + haze * 88 + polar * 35;
-  pixels.data[i + 2] = 91 + haze * 109 + polar * 25;
+  pixels.data[i] = 10 + haze * 75 + polar * 35;
+  pixels.data[i + 1] = 43 + haze * 110 + polar * 35;
+  pixels.data[i + 2] = 80 + haze * 126 + polar * 25;
   pixels.data[i + 3] = 255;
  }
  ctx.putImageData(pixels, 0, 0); return canvas;
