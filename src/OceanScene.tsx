@@ -92,7 +92,7 @@ function Jelly({index,onInspect}:{index:number;onInspect:(id:OceanSubject)=>void
  return <group ref={ref} onClick={e=>{e.stopPropagation();onInspect('jelly');}}>
   <mesh scale={[.38,.22,.38]}><sphereGeometry args={[1,24,16,0,Math.PI*2,0,Math.PI*.6]}/><meshPhysicalMaterial color='#9af7e5' transparent opacity={.48} roughness={.3} side={DoubleSide} depthWrite={false} emissive='#1ee8cb' emissiveIntensity={.35}/></mesh>
   <mesh scale={[.12,.08,.12]}><sphereGeometry args={[1,12,8]}/><meshStandardMaterial color='#edffae' emissive='#69f8cd' emissiveIntensity={.7}/></mesh>
-  {Array.from({length:quality==='ultra'?7:quality==='auto'?5:3},(_,j)=><mesh key={j} position={[Math.cos(j*6.28/7)*.17,-.32,Math.sin(j*6.28/7)*.17]} rotation={[Math.sin(j)*.14,0,Math.cos(j)*.12]}><cylinderGeometry args={[.009,.003,.65+(j%3)*.1,5]}/><meshStandardMaterial color='#7cbdbe' transparent opacity={.6} emissive='#24626d' emissiveIntensity={.3}/></mesh>)}
+  {Array.from({length:7},(_,j)=><mesh key={j} position={[Math.cos(j*6.28/7)*.17,-.32,Math.sin(j*6.28/7)*.17]} rotation={[Math.sin(j)*.14,0,Math.cos(j)*.12]}><cylinderGeometry args={[.009,.003,.65+(j%3)*.1,5]}/><meshStandardMaterial color='#7cbdbe' transparent opacity={.6} emissive='#24626d' emissiveIntensity={.3}/></mesh>)}
  </group>;
 }
 function Swimmer({index,onInspect}:{index:number;onInspect:(id:OceanSubject)=>void}) {
@@ -191,7 +191,7 @@ function OceanDetails({depth,onInspect}:{depth:number;onInspect:(id:OceanSubject
  </group>;
 }
 
-function OceanWorld({state,subject,onInspect,dragAngle}:{state:OceanState;subject:OceanSubject|null;onInspect:(id:OceanSubject)=>void;dragAngle:number}) {
+function OceanWorld({state,subject,onInspect,dragAngle,firstPerson,quality}:{state:OceanState;subject:OceanSubject|null;onInspect:(id:OceanSubject)=>void;dragAngle:number;firstPerson:boolean;quality:'ultra'|'auto'|'performance'}) {
  const world=useRef<Group>(null);
  const targetPoint=useRef(new Vector3(1,-.65,-6));
  const desiredPoint=useRef(new Vector3());
@@ -220,7 +220,7 @@ function OceanWorld({state,subject,onInspect,dragAngle}:{state:OceanState;subjec
  });
  return <><Lighting depth={state.depth}/><group ref={world}><Seabed depth={state.depth}/><WaterCeiling depth={state.depth}/><Rocks depth={state.depth} sonar={state.sonarCount>0} onInspect={onInspect}/><OceanDetails depth={state.depth} onInspect={onInspect}/><BenthicLife depth={state.depth} onInspect={onInspect}/>
   <Sparkles count={quality==='ultra'?180:quality==='auto'?95:35} scale={[24,12,28]} position={[0,0,-8]} size={1.2} speed={.16} opacity={.24} color='#a5cfd0'/>
-  {Array.from({length:7},(_,i)=><Jelly key={i} index={i} onInspect={onInspect}/>)}
+  {Array.from({length:quality==='ultra'?7:quality==='auto'?5:3},(_,i)=><Jelly key={i} index={i} onInspect={onInspect}/>)}
   {Array.from({length:quality==='ultra'?18:quality==='auto'?12:6},(_,i)=><Swimmer key={i} index={i} onInspect={onInspect}/>)}</group>{!firstPerson&&<Submersible samples={state.samples} collection={state.collection} lights={state.lights}/>}<SonarPulse count={state.sonarCount}/></>;
 }
 export function OceanScene({state,subject,onInspect,onZoom,quality='ultra'}:{state:OceanState;subject:OceanSubject|null;onInspect:(id:OceanSubject)=>void;onZoom:(closer:boolean)=>void;quality?:'ultra'|'auto'|'performance'}) {
