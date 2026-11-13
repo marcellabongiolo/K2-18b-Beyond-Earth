@@ -7,7 +7,7 @@ export function oceanReducer(state: OceanState, action: OceanAction): OceanState
  switch (action) {
   case 'lights': return {...state,lights:!state.lights};
   case 'sonar': return {...state,sonarCount:state.sonarCount+1};
-  case 'approach': return { ...state, distance: Math.max(4,state.distance-0.5) };
+  case 'approach': return { ...state, distance: Math.max(2.5,state.distance-0.5) };
   case 'retreat': return { ...state, distance: Math.min(12,state.distance+0.5) };
   case 'dive': return { ...state, depth: Math.min(1000, state.depth + 40) };
   case 'ascend': return { ...state, depth: Math.max(0, state.depth - 40) };
