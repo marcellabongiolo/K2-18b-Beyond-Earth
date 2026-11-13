@@ -1,5 +1,5 @@
 import type { SpaceTargetId } from './exploration';
-import { Html } from '@react-three/drei';
+import { Billboard, Html } from '@react-three/drei';
 import { useEffect, useMemo } from 'react';
 import { AdditiveBlending, BufferAttribute, BufferGeometry, Color, ShaderMaterial } from 'three';
 
@@ -38,8 +38,8 @@ export function SpaceSurroundings({onSelect}:{onSelect:(id:SpaceTargetId)=>void}
   <group position={[-6,3.5,-13]}>
    <mesh material={star} onClick={e=>{e.stopPropagation();onSelect('star');}}><sphereGeometry args={[.85,40,24]}/></mesh>
 
-   <mesh material={halo}><planeGeometry args={[5,5]}/></mesh>
-   <Html occlude position={[0,-1.25,0]} center style={{pointerEvents:'none'}}><span className='space-label'>K2-18 · estrela</span></Html>
+   <Billboard><mesh material={halo} renderOrder={-1}><planeGeometry args={[5,5]}/></mesh></Billboard>
+   <Html position={[0,-1.25,0]} center style={{pointerEvents:'none'}}><span className='space-label'>K2-18 · estrela</span></Html>
   </group>
   <group position={[5,2.6,-9]}>
    <mesh material={companion} onClick={e=>{e.stopPropagation();onSelect('c');}}><sphereGeometry args={[.48,96,64]}/></mesh>
