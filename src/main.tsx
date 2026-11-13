@@ -33,6 +33,7 @@ function SpaceScene({probeVisible,phase,distance,systemView,cinematic,focus,onSe
 function App(){
  const [calibration,setCalibration]=useState(35);
  const [labOpen,setLabOpen]=useState(window.location.hash==='#laboratorio');
+ const [labOnly,setLabOnly]=useState(window.location.hash==='#laboratorio');
  const orbitalPinch=useRef<number|null>(null);
  const [planetModel,setPlanetModel]=useState<PlanetModel>('hycean');
  const [flare,setFlare]=useState(false);
@@ -56,8 +57,9 @@ function App(){
  const distance=oceanMode?ocean.distance:mission.distance;
  const nearLimit=oceanMode?2.5:2.4,farLimit=12;
  const zoom=(closer:boolean)=>oceanMode?oceanDispatch(closer?'approach':'retreat'):dispatch(closer?'approach':'retreat');
+ if(labOnly)return <main className='standalone-lab'><header className='app-header'><span className='brand'>BEYOND <b>EARTH</b></span><span className='world-title'>Laboratório científico</span><button type='button' onClick={()=>{setLabOnly(false);window.location.hash='';}}>Voltar à exploração 3D</button></header><ResearchWorkbench/><footer className='scientific-note'>PROTÓTIPO DE PESQUISA · NÃO É INSTRUMENTO CIENTÍFICO VALIDADO</footer></main>;
  return <main className={'explorer'+(controlsOpen?'':' controls-hidden')}>
-  <header className='app-header'><span className='brand'>BEYOND <b>EARTH</b></span><span className='world-title'>K2-18 b</span><button type='button' onClick={()=>{setOceanMode(false);setControlsOpen(true);setLabOpen(true);window.location.hash='laboratorio';window.setTimeout(()=>document.getElementById('laboratorio')?.scrollIntoView({behavior:'smooth',block:'start'}),100);}}>🔬 Laboratório</button><button type='button' aria-expanded={controlsOpen} aria-controls='simulation-controls' onClick={()=>setControlsOpen(v=>!v)}>{controlsOpen?'Ocultar controles':'Mostrar controles'}</button></header>
+  <header className='app-header'><span className='brand'>BEYOND <b>EARTH</b></span><span className='world-title'>K2-18 b</span><button type='button' onClick={()=>{setOceanMode(false);setControlsOpen(true);setLabOpen(true);setLabOnly(true);window.location.hash='laboratorio';window.setTimeout(()=>document.getElementById('laboratorio')?.scrollIntoView({behavior:'smooth',block:'start'}),100);}}>🔬 Laboratório</button><button type='button' aria-expanded={controlsOpen} aria-controls='simulation-controls' onClick={()=>setControlsOpen(v=>!v)}>{controlsOpen?'Ocultar controles':'Mostrar controles'}</button></header>
   <section className='scene' aria-label={oceanMode?'Visualização do oceano hipotético':'Visualização orbital de K2-18 b'}>
    <div className='viewport' onTouchStart={e=>{if(oceanMode)return;if(e.touches.length===2)orbitalPinch.current=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);}} onTouchMove={e=>{if(oceanMode||e.touches.length!==2)return;const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);if(orbitalPinch.current!==null&&Math.abs(d-orbitalPinch.current)>18){zoom(d>orbitalPinch.current);orbitalPinch.current=d;}}} onTouchEnd={()=>{orbitalPinch.current=null;}} onWheel={e=>{if(e.deltaY!==0){e.preventDefault();zoom(e.deltaY<0);}}}>{oceanMode?<OceanScene state={ocean} subject={subject} onInspect={setSubject} onZoom={zoom}/>:<SpaceScene flare={flare} model={planetModel} probeVisible={probeVisible} phase={phase} distance={mission.distance} systemView={systemView} cinematic={cinematic} focus={focus} onSelect={selectTarget}/>}</div>
    <div className='scene-caption'>{oceanMode?(subject?oceanSubjects[subject].name:oceanZone(ocean.depth)):focus!=='b'?focused.name:systemView?'Sistema K2-18 · composição ilustrativa':cinematic?'K2-18 b · cenário cinematográfico fictício':flightPhases[phase]}</div>
