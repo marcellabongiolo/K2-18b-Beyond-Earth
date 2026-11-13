@@ -36,3 +36,10 @@
 .gas-model .cutaway-atmosphere{border-color:#b9a9d7;background:#81769c}
 .gas-model .cutaway-middle{background:#60556f}
 .gas-model .cutaway-core{background:#d86c46}
+
+/* Clear research entry and touch-friendly 3D navigation. */
+.viewport{touch-action:none}
+.lab-entry{margin-top:18px;padding:15px;border:1px solid #70bdb9;border-radius:12px;background:#0b2937}
+.lab-entry>button{width:100%;min-height:44px;background:#1a6771;color:#fff;font-weight:700}
+.research-workbench input,.research-workbench textarea{box-sizing:border-box;max-width:100%;width:100%;padding:9px;background:#0b2230;color:#e9ffff;border:1px solid #65949b;border-radius:5px}
+.research-workbench svg{display:block;margin:12px 0;border-radius:6px}
