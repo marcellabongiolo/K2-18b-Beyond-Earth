@@ -191,7 +191,7 @@ function OceanDetails({depth,onInspect}:{depth:number;onInspect:(id:OceanSubject
  </group>;
 }
 
-function OceanWorld({state,subject,onInspect,dragAngle}:{state:OceanState;subject:OceanSubject|null;onInspect:(id:OceanSubject)=>void;dragAngle:number}) {
+function OceanWorld({state,subject,onInspect,dragAngle,firstPerson,quality}:{state:OceanState;subject:OceanSubject|null;onInspect:(id:OceanSubject)=>void;dragAngle:number;firstPerson:boolean;quality:'ultra'|'auto'|'performance'}) {
  const world=useRef<Group>(null);
  const targetPoint=useRef(new Vector3(1,-.65,-6));
  const desiredPoint=useRef(new Vector3());
@@ -211,7 +211,7 @@ function OceanWorld({state,subject,onInspect,dragAngle}:{state:OceanState;subjec
    desiredCamera.current.copy(desiredPoint.current).add(new Vector3(0,1.3,subject==='jelly'?3.3:4.1));
   }else{
    desiredPoint.current.set(1,-.65,-6);
-   desiredCamera.current.set(0,1+Math.sin(clock.elapsedTime*.17)*.045,state.distance);
+   desiredCamera.current.set(0,1+Math.sin(clock.elapsedTime*.17)*.045,firstPerson?0.1:state.distance);
   }
   const smoothing=1-Math.exp(-delta*2.8);
   targetPoint.current.lerp(desiredPoint.current,smoothing);
@@ -219,12 +219,13 @@ function OceanWorld({state,subject,onInspect,dragAngle}:{state:OceanState;subjec
   camera.lookAt(targetPoint.current);
  });
  return <><Lighting depth={state.depth}/><group ref={world}><Seabed depth={state.depth}/><WaterCeiling depth={state.depth}/><Rocks depth={state.depth} sonar={state.sonarCount>0} onInspect={onInspect}/><OceanDetails depth={state.depth} onInspect={onInspect}/><BenthicLife depth={state.depth} onInspect={onInspect}/>
-  <Sparkles count={180} scale={[24,12,28]} position={[0,0,-8]} size={1.2} speed={.16} opacity={.24} color='#a5cfd0'/>
-  {Array.from({length:7},(_,i)=><Jelly key={i} index={i} onInspect={onInspect}/>)}
-  {Array.from({length:18},(_,i)=><Swimmer key={i} index={i} onInspect={onInspect}/>)}</group><Submersible samples={state.samples} collection={state.collection} lights={state.lights}/><SonarPulse count={state.sonarCount}/></>;
+  <Sparkles count={quality==='ultra'?180:quality==='auto'?95:35} scale={[24,12,28]} position={[0,0,-8]} size={1.2} speed={.16} opacity={.24} color='#a5cfd0'/>
+  {Array.from({length:quality==='ultra'?7:quality==='auto'?5:3},(_,i)=><Jelly key={i} index={i} onInspect={onInspect}/>)}
+  {Array.from({length:quality==='ultra'?18:quality==='auto'?12:6},(_,i)=><Swimmer key={i} index={i} onInspect={onInspect}/>)}</group>{!firstPerson&&<Submersible samples={state.samples} collection={state.collection} lights={state.lights}/>}<SonarPulse count={state.sonarCount}/></>;
 }
 export function OceanScene({state,subject,onInspect,onZoom,quality='ultra'}:{state:OceanState;subject:OceanSubject|null;onInspect:(id:OceanSubject)=>void;onZoom:(closer:boolean)=>void;quality?:'ultra'|'auto'|'performance'}) {
  const [dragAngle,setDragAngle]=useState(0);
+ const [firstPerson,setFirstPerson]=useState(false);
  const pointers=useRef(new Map<number,{x:number;y:number}>());
  const lastPinch=useRef<number|null>(null);
  return <div className='ocean-canvas' role='region' aria-label='Oceano hipotético interativo. Arraste com o dedo ou mouse para girar a cena; use os botões para profundidade e zoom.'
@@ -233,6 +234,6 @@ export function OceanScene({state,subject,onInspect,onZoom,quality='ultra'}:{sta
   onPointerMove={e=>{const p=pointers.current.get(e.pointerId);if(!p)return;const dx=e.clientX-p.x;pointers.current.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.current.size===1){setDragAngle(a=>dragOrbitAngle(a,dx));lastPinch.current=null;}else if(pointers.current.size===2){const [a,b]=[...pointers.current.values()];const distance=Math.hypot(a.x-b.x,a.y-b.y);if(lastPinch.current!==null&&Math.abs(distance-lastPinch.current)>18){onZoom(distance>lastPinch.current);lastPinch.current=distance;}else if(lastPinch.current===null)lastPinch.current=distance;}}}
   onPointerUp={e=>{pointers.current.delete(e.pointerId);lastPinch.current=null;if(e.currentTarget.hasPointerCapture(e.pointerId))e.currentTarget.releasePointerCapture(e.pointerId);}}
   onPointerCancel={e=>{pointers.current.delete(e.pointerId);lastPinch.current=null;}}>
-  <Canvas camera={{position:[0,1,7],fov:52,near:.1,far:80}} dpr={quality==='ultra'?[1.5,2]:quality==='auto'?[1,1.5]:[0.75,1]} gl={{antialias:true,powerPreference:'high-performance',toneMapping:ACESFilmicToneMapping,outputColorSpace:SRGBColorSpace}}><OceanWorld state={state} subject={subject} onInspect={onInspect} dragAngle={dragAngle}/></Canvas>
+  <button className='ocean-camera-toggle' type='button' aria-pressed={firstPerson} onClick={()=>setFirstPerson(v=>!v)}>{firstPerson?'Câmera externa':'Câmera do submersível'}</button><Canvas camera={{position:[0,1,7],fov:52,near:.1,far:80}} dpr={quality==='ultra'?[1.5,2]:quality==='auto'?[1,1.5]:[0.75,1]} gl={{antialias:true,powerPreference:'high-performance',toneMapping:ACESFilmicToneMapping,outputColorSpace:SRGBColorSpace}}><OceanWorld state={state} subject={subject} onInspect={onInspect} dragAngle={dragAngle} firstPerson={firstPerson} quality={quality}/></Canvas>
  </div>;
 }
