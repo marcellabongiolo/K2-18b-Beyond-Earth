@@ -54,7 +54,7 @@ function App(){
  const [systemView,setSystemView]=useState(false);
  const [phase,setPhase]=useState<FlightPhase>('orbit');
  const [oceanMode,setOceanMode]=useState(false);
- const [controlsOpen,setControlsOpen]=useState(true);
+ const [controlsOpen,setControlsOpen]=useState(false);
  const [probeVisible,setProbeVisible]=useState(true);
  const [mission,dispatch]=useReducer(nextMission,initialMission);
  const [ocean,oceanDispatch]=useReducer(oceanReducer,initialOcean);
