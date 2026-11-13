@@ -1,4 +1,4 @@
-import { planetaryModels, signalAssessment, spectralSignal, spectralSpecies, type PlanetModel } from './scientificTelemetry';
+import { planetaryModels, scientificCaveat, signalAssessment, spectralSignal, spectralSpecies, type PlanetModel } from './scientificTelemetry';
 
 export function ScientificTelemetry({calibration,onCalibration,model,onModel,flare,onFlare}:{calibration:number;onCalibration:(n:number)=>void;model:PlanetModel;onModel:(m:PlanetModel)=>void;flare:boolean;onFlare:()=>void}) {
  const points=Array.from({length:160},(_,i)=>{const x=1+i*2.9/159,y=spectralSignal(x,calibration,flare);return `${i*3.35},${112-y*96}`;}).join(' ');
@@ -6,8 +6,8 @@ export function ScientificTelemetry({calibration,onCalibration,model,onModel,fla
  return <section className='scientific-telemetry' aria-label='Missão 02 — telemetria científica simulada'>
   <h2>Missão 02 — Telemetria de Sonda</h2>
   <p className='science-warning'>VISUALIZAÇÃO DIDÁTICA · NÃO SÃO DADOS BRUTOS DO JWST · VIDA NÃO CONFIRMADA</p>
-  <h3>Espectrômetro de massa · espectro ilustrativo</h3>
-  <p>CH₄ e CO₂: moléculas relatadas em estudos atmosféricos. H₂: hipótese de atmosfera rica em hidrogênio. DMS/DMDS: interpretação contestada, sem detecção conclusiva.</p>
+  <h3>Espectrógrafo infravermelho · espectro sintético</h3>
+  <p>CH₄ e CO₂: assinaturas relatadas em estudos atmosféricos. H₂: hipótese de atmosfera rica em hidrogênio. DMS/DMDS: interpretação contestada, sem detecção conclusiva. Os picos e seus comprimentos de onda são esquemáticos, não posições ou intensidades medidas.</p>
   <svg viewBox='0 0 580 136' role='img' aria-label='Gráfico espectral ilustrativo, com picos de metano, dióxido de carbono, hidrogênio e sinal ambíguo de DMS ou DMDS'>
    <rect x='0' y='0' width='580' height='136' fill='#061b2a'/>
    {[20,48,76,104].map(y=><line key={y} x1='24' x2='560' y1={y} y2={y} stroke='#30536a' strokeWidth='.6'/>)}
@@ -18,7 +18,7 @@ export function ScientificTelemetry({calibration,onCalibration,model,onModel,fla
   <label htmlFor='stellar-noise-filter'>Calibração de filtro de ruído estelar: <b>{calibration}%</b></label>
   <input id='stellar-noise-filter' type='range' min='0' max='100' value={calibration} onChange={e=>onCalibration(Number(e.target.value))}/>
   <p role='status' className='science-reading'>{signalAssessment(calibration,flare)}</p>
-  <p className='science-warning'>O filtro altera apenas uma curva sintética; não aumenta a significância estatística de observações reais.</p>
+  <p className='science-warning'>{scientificCaveat}</p>
   <h3>Modelo Planetário</h3>
   <div className='actions'><button type='button' aria-pressed={model==='hycean'} onClick={()=>onModel('hycean')}>Mundo hiceânico</button><button type='button' aria-pressed={model==='miniNeptune'} onClick={()=>onModel('miniNeptune')}>Mini-Netuno gasoso</button></div>
   <div className={'planetary-cutaway '+(model==='miniNeptune'?'gas-model':'')} role='img' aria-label={'Corte transversal ilustrativo: '+hypothesis.layers.join(', ')}>
