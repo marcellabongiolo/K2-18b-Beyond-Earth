@@ -43,3 +43,5 @@
 .lab-entry>button{width:100%;min-height:44px;background:#1a6771;color:#fff;font-weight:700}
 .research-workbench input,.research-workbench textarea{box-sizing:border-box;max-width:100%;width:100%;padding:9px;background:#0b2230;color:#e9ffff;border:1px solid #65949b;border-radius:5px}
 .research-workbench svg{display:block;margin:12px 0;border-radius:6px}
+
+.standalone-lab{min-height:100vh;max-width:1000px;margin:auto;padding:16px;color:#e5f5f5;background:#061723}.standalone-lab .research-workbench{padding:20px;border:1px solid #508e9b;border-radius:12px;background:#0a2635}.standalone-lab .research-workbench input,.standalone-lab .research-workbench textarea,.standalone-lab .research-workbench select{display:block;max-width:100%;width:100%;margin:8px 0 15px;padding:10px;background:#0c2a39;color:#eff;border:1px solid #6798a4;border-radius:6px}.standalone-lab .research-workbench svg{max-width:100%}
