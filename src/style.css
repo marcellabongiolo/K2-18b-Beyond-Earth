@@ -56,3 +56,11 @@
 .mission-center .mission-toggle{padding:7px 12px;background:#17647a;color:#fff;border:1px solid #4b9da7;border-radius:8px;cursor:pointer}
 #mission-center-details[hidden]{display:none}
 @media(max-width:600px){.mission-center{padding:8px 10px}.mission-center-heading strong{font-size:13px}.mission-center .mission-toggle{padding:6px 9px}}
+
+/* Command center belongs to the sidebar, never to the viewport grid. */
+.controls .mission-center{margin:0 0 18px;padding:9px;border-radius:9px}
+.controls .mission-center-heading{gap:8px}
+.controls .mission-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+.controls .mission-metrics span{min-width:0;overflow-wrap:anywhere}
+.controls .mission-buttons{display:grid;grid-template-columns:1fr 1fr}
+.controls .mission-buttons button,.controls .mission-buttons a{white-space:normal;text-align:center}
