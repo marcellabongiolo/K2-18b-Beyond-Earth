@@ -14,3 +14,4 @@ jobs:
       - run: npm test
       - run: npm run build
       - run: node scripts/check-pages-build.mjs
+      - run: node scripts/check-layout-regressions.mjs
