@@ -25,7 +25,7 @@ function AtmosphereGlow() {
 export function PlanetSurface({model='hycean'}:{model?:PlanetModel}) {
  const surface = useRef<Group>(null), clouds = useRef<Group>(null), highClouds = useRef<Group>(null);
  const texture = useMemo(() => { const t = new CanvasTexture(createPlanetTexture()); t.colorSpace = SRGBColorSpace; t.anisotropy = 16; return t; }, []);
- const cloudTexture = useMemo(() => { const t = new CanvasTexture(createCloudTexture()); t.colorSpace = SRGBColorSpace; t.anisotropy = 4; return t; }, []);
+ const cloudTexture = useMemo(() => { const t = new CanvasTexture(createCloudTexture()); t.colorSpace = SRGBColorSpace; t.anisotropy = 16; return t; }, []);
  useFrame((_, delta) => {
   if (surface.current) surface.current.rotation.y += delta * 0.018;
   if (clouds.current) clouds.current.rotation.y += delta * 0.027;
@@ -33,9 +33,9 @@ export function PlanetSurface({model='hycean'}:{model?:PlanetModel}) {
  });
  return <group rotation={[0.17,0,-0.12]}>
   <group ref={surface}><mesh><sphereGeometry args={[1.7,128,96]}/><meshStandardMaterial map={model==='hycean'?texture:null} color={model==='hycean'?'#ffffff':'#8b7caa'} bumpMap={model==='hycean'?texture:null} bumpScale={0.025} roughness={0.92} metalness={0}/></mesh></group>
-  <group ref={clouds}><mesh rotation={[0,0.35,0]}><sphereGeometry args={[1.724,128,96]}/><meshStandardMaterial map={cloudTexture} transparent opacity={0.36} roughness={1} depthWrite={false}/></mesh></group>
-  <group ref={highClouds}><mesh rotation={[0.24,0.55,0]}><sphereGeometry args={[1.744,96,64]}/><meshStandardMaterial map={cloudTexture} transparent opacity={0.07} roughness={1} depthWrite={false}/></mesh></group>
-  {model==='miniNeptune'&&<mesh><sphereGeometry args={[1.76,96,64]}/><meshStandardMaterial color='#867aa8' transparent opacity={.45} roughness={1} depthWrite={false}/></mesh>}
+  {model==='hycean' && <group ref={clouds}><mesh rotation={[0,0.35,0]}><sphereGeometry args={[1.724,128,96]}/><meshStandardMaterial map={cloudTexture} transparent opacity={0.36} roughness={1} depthWrite={false}/></mesh></group>}
+  {model==='hycean' && <group ref={highClouds}><mesh rotation={[0.24,0.55,0]}><sphereGeometry args={[1.744,96,64]}/><meshStandardMaterial map={cloudTexture} transparent opacity={0.07} roughness={1} depthWrite={false}/></mesh></group>}
+  {model==='miniNeptune'&&<group ref={clouds}><mesh><sphereGeometry args={[1.73,128,96]}/><meshStandardMaterial color='#a49abd' transparent opacity={.7} roughness={1} depthWrite={false}/></mesh><mesh rotation={[0,.3,.15]}><sphereGeometry args={[1.745,128,96]}/><meshStandardMaterial map={cloudTexture} color='#bd9cb9' transparent opacity={.19} roughness={1} depthWrite={false}/></mesh></group>}
   <AtmosphereGlow/>
  </group>;
 }
