@@ -10,3 +10,11 @@
 /* High-contrast labels stay legible against dark nebulae and bright objects. */
 .space-label{color:#f1faff;font-size:12px;font-weight:600;letter-spacing:.02em;background:#071725e8;border:1px solid #79afc5;box-shadow:0 2px 12px #000b;padding:5px 9px;border-radius:5px;text-shadow:0 1px 2px #000}
 .space-label--distant{font-size:11px;max-width:180px;text-align:center;white-space:normal;line-height:1.3}
+
+/* Inspection feedback must be visible in the scene, not only below the dropdown. */
+.inspection-overlay{position:absolute;right:14px;top:14px;z-index:3;width:min(310px,calc(100% - 28px));max-height:55%;overflow:auto;background:#061b29f2;border:1px solid #80c9c7;border-radius:10px;padding:15px;color:#e5f9f6;box-shadow:0 8px 36px #0009}
+.inspection-overlay .inspection-kicker{display:block;color:#8ce1cf;font-size:9px;letter-spacing:.12em;margin-bottom:7px}
+.inspection-overlay strong{font-size:15px;display:block}
+.inspection-overlay p{font-size:12px;line-height:1.55;color:#b8d6d7}
+.inspection-overlay button{min-height:34px;padding:6px 12px}
+@media(max-width:780px){.inspection-overlay{right:8px;top:36px;width:min(240px,calc(100% - 16px));padding:10px;max-height:50%}.inspection-overlay strong{font-size:12px}.inspection-overlay p{font-size:10px}}
