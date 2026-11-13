@@ -64,3 +64,15 @@
 .controls .mission-metrics span{min-width:0;overflow-wrap:anywhere}
 .controls .mission-buttons{display:grid;grid-template-columns:1fr 1fr}
 .controls .mission-buttons button,.controls .mission-buttons a{white-space:normal;text-align:center}
+
+/* Defensive layout: never allow a legacy command center to become a grid cell over the planet. */
+.explorer{grid-template-areas:'header header' 'scene sidebar' 'footer footer'}
+.explorer>.app-header{grid-area:header}
+.explorer>.scene{grid-area:scene}
+.explorer>.controls{grid-area:sidebar;min-width:0}
+.explorer>.scientific-note{grid-area:footer}
+.explorer.controls-hidden{grid-template-areas:'header header' 'scene scene' 'footer footer'}
+.explorer.controls-hidden>.controls{display:none}
+.explorer>.mission-center{display:none}
+@media(max-width:780px){.explorer{grid-template-areas:'header' 'scene' 'sidebar' 'footer'}.explorer.controls-hidden{grid-template-areas:'header' 'scene' 'footer'}}
+@media(max-height:540px) and (max-width:780px) and (orientation:landscape) and (min-width:600px){.explorer{grid-template-areas:'header header' 'scene sidebar' 'footer footer'}.explorer.controls-hidden{grid-template-areas:'header header' 'scene scene' 'footer footer'}}
