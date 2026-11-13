@@ -20,3 +20,19 @@
 @media(max-width:780px){.inspection-overlay{right:8px;top:36px;width:min(240px,calc(100% - 16px));padding:10px;max-height:50%}.inspection-overlay strong{font-size:12px}.inspection-overlay p{font-size:10px}}
 
 .inspection-launch{display:flex;flex-direction:column;gap:7px;margin:16px 0 12px}.inspection-launch button{background:#1a5b69;border-color:#8fd9d6;color:#fff;font-weight:700;text-align:center;font-size:13px}.inspection-launch button:hover{background:#267887}.inspection-launch span{font-size:11px;line-height:1.5;color:#b7d4df}
+
+/* Missão 02: instrument readouts and schematic internal structure. */
+.scientific-telemetry{margin-top:18px;padding-top:12px;border-top:1px solid #416777}
+.scientific-telemetry h3{margin:18px 0 8px;color:#d4f5f1}
+.scientific-telemetry svg{width:100%;height:auto;display:block;border:1px solid #345669;border-radius:8px;margin:12px 0}
+.scientific-telemetry input[type=range]{display:block;width:100%;accent-color:#83dccc;margin:12px 0}
+.scientific-telemetry .science-warning{font-size:11px;color:#a8cad1;line-height:1.5}
+.scientific-telemetry .science-reading{padding:9px;border-left:3px solid #75d2c2;background:#123443;color:#d6f5ef}
+.planetary-cutaway{width:156px;height:156px;border-radius:50%;margin:14px auto;border:2px solid #80c5d0;display:grid;place-items:center;background:radial-gradient(circle,#427fb1 0 54%,#9bbcd0 56% 67%,#a4dce4 69%);box-shadow:0 0 22px #54b3c344}
+.cutaway-atmosphere{width:120px;height:120px;border-radius:50%;display:grid;place-items:center;border:3px solid #6bc2d7;background:#12537d}
+.cutaway-middle{width:82px;height:82px;border-radius:50%;display:grid;place-items:center;background:#196b91}
+.cutaway-core{width:39px;height:39px;border-radius:50%;background:#786d6b}
+.gas-model{border-color:#ba9ed5;background:radial-gradient(circle,#b07b66 0 26%,#68566f 27% 53%,#9789ba 54% 75%,#b2a9d4 76%)}
+.gas-model .cutaway-atmosphere{border-color:#b9a9d7;background:#81769c}
+.gas-model .cutaway-middle{background:#60556f}
+.gas-model .cutaway-core{background:#d86c46}
