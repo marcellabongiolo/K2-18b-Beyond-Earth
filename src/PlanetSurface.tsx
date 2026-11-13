@@ -23,7 +23,7 @@ function AtmosphereGlow() {
 }
 export function PlanetSurface() {
  const surface = useRef<Group>(null), clouds = useRef<Group>(null), highClouds = useRef<Group>(null);
- const texture = useMemo(() => { const t = new CanvasTexture(createPlanetTexture()); t.colorSpace = SRGBColorSpace; t.anisotropy = 4; return t; }, []);
+ const texture = useMemo(() => { const t = new CanvasTexture(createPlanetTexture()); t.colorSpace = SRGBColorSpace; t.anisotropy = 16; return t; }, []);
  const cloudTexture = useMemo(() => { const t = new CanvasTexture(createCloudTexture()); t.colorSpace = SRGBColorSpace; t.anisotropy = 4; return t; }, []);
  useFrame((_, delta) => {
   if (surface.current) surface.current.rotation.y += delta * 0.018;
@@ -32,8 +32,8 @@ export function PlanetSurface() {
  });
  return <group rotation={[0.17,0,-0.12]}>
   <group ref={surface}><mesh><sphereGeometry args={[1.7,128,96]}/><meshStandardMaterial map={texture} bumpMap={texture} bumpScale={0.025} roughness={0.92} metalness={0}/></mesh></group>
-  <group ref={clouds}><mesh rotation={[0,0.35,0]}><sphereGeometry args={[1.724,128,96]}/><meshStandardMaterial map={cloudTexture} transparent opacity={0.65} roughness={1} depthWrite={false}/></mesh></group>
-  <group ref={highClouds}><mesh rotation={[0.24,0.55,0]}><sphereGeometry args={[1.744,96,64]}/><meshStandardMaterial map={cloudTexture} transparent opacity={0.18} roughness={1} depthWrite={false}/></mesh></group>
+  <group ref={clouds}><mesh rotation={[0,0.35,0]}><sphereGeometry args={[1.724,128,96]}/><meshStandardMaterial map={cloudTexture} transparent opacity={0.36} roughness={1} depthWrite={false}/></mesh></group>
+  <group ref={highClouds}><mesh rotation={[0.24,0.55,0]}><sphereGeometry args={[1.744,96,64]}/><meshStandardMaterial map={cloudTexture} transparent opacity={0.07} roughness={1} depthWrite={false}/></mesh></group>
   <AtmosphereGlow/>
  </group>;
 }
