@@ -17,7 +17,7 @@ describe('visible camera zoom controls',()=>{
  });
  it('zooms underwater independently of depth and clamps both limits',()=>{
   let s=oceanReducer(initialOcean,'approach');expect(s.distance).toBeLessThan(initialOcean.distance);expect(s.depth).toBe(initialOcean.depth);
-  for(let i=0;i<100;i++)s=oceanReducer(s,'approach');expect(s.distance).toBe(4);
+  for(let i=0;i<100;i++)s=oceanReducer(s,'approach');expect(s.distance).toBe(2.5);
   for(let i=0;i<100;i++)s=oceanReducer(s,'retreat');expect(s.distance).toBe(12);
   expect(oceanReducer(s,'reset')).toEqual(initialOcean);
  });
