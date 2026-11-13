@@ -18,3 +18,5 @@
 .inspection-overlay p{font-size:12px;line-height:1.55;color:#b8d6d7}
 .inspection-overlay button{min-height:34px;padding:6px 12px}
 @media(max-width:780px){.inspection-overlay{right:8px;top:36px;width:min(240px,calc(100% - 16px));padding:10px;max-height:50%}.inspection-overlay strong{font-size:12px}.inspection-overlay p{font-size:10px}}
+
+.inspection-launch{display:flex;flex-direction:column;gap:7px;margin:16px 0 12px}.inspection-launch button{background:#1a5b69;border-color:#8fd9d6;color:#fff;font-weight:700;text-align:center;font-size:13px}.inspection-launch button:hover{background:#267887}.inspection-launch span{font-size:11px;line-height:1.5;color:#b7d4df}
