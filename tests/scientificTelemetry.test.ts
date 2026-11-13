@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { planetaryModels, signalAssessment, spectralSignal, spectralSpecies } from '../src/scientificTelemetry';
+import { planetaryModels, scientificCaveat, signalAssessment, spectralSignal, spectralSpecies } from '../src/scientificTelemetry';
 
 describe('Missão 02 — rigor da telemetria ilustrativa',()=>{
  it('mantém leituras espectrais limitadas e finitas',()=>{
@@ -12,8 +12,14 @@ describe('Missão 02 — rigor da telemetria ilustrativa',()=>{
  });
  it('mantém DMS/DMDS explicitamente ambíguo',()=>{
   expect(spectralSpecies.find(s=>s.id==='DMS')?.label).toMatch(/disputado/);
-  expect(signalAssessment(100)).toMatch(/não confirmada/);
+  expect(signalAssessment(100)).toMatch(/contestada/);
+  expect(scientificCaveat).toMatch(/não confirma/);
   expect(signalAssessment(0)).toMatch(/inconclusivos/);
+ });
+ it('não fabrica um pico candidato mais forte com a calibração',()=>{
+  const low=spectralSignal(3.35,0);
+  const high=spectralSignal(3.35,100);
+  expect(Math.abs(high-low)).toBeLessThan(.2);
  });
  it('prioriza interferência durante flare',()=>{
   expect(signalAssessment(90,true)).toMatch(/Interferência/);
