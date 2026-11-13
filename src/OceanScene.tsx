@@ -2,7 +2,7 @@ import type { OceanSubject } from './exploration';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Sparkles } from '@react-three/drei';
 import { useEffect, useMemo, useRef } from 'react';
-import { ACESFilmicToneMapping, AdditiveBlending, Color, DirectionalLight, DoubleSide, Fog, Group, Mesh, MeshBasicMaterial, Object3D, PlaneGeometry, ShaderMaterial, SRGBColorSpace } from 'three';
+import { ACESFilmicToneMapping, AdditiveBlending, Color, DirectionalLight, DoubleSide, Fog, Group, Mesh, MeshBasicMaterial, Object3D, Vector3, PlaneGeometry, ShaderMaterial, SRGBColorSpace } from 'three';
 import { oceanEnvironment, seabedHeight, type Collection, type OceanState } from './ocean';
 
 const vertex = `varying vec3 vWorld; void main(){vec4 world=modelMatrix*vec4(position,1.);vWorld=world.xyz;gl_Position=projectionMatrix*viewMatrix*world;}`;
@@ -190,19 +190,40 @@ function OceanDetails({depth,onInspect}:{depth:number;onInspect:(id:OceanSubject
  </group>;
 }
 
-function OceanWorld({state,onInspect}:{state:OceanState;onInspect:(id:OceanSubject)=>void}) {
+function OceanWorld({state,subject,onInspect}:{state:OceanState;subject:OceanSubject|null;onInspect:(id:OceanSubject)=>void}) {
  const world=useRef<Group>(null);
+ const targetPoint=useRef(new Vector3(1,-.65,-6));
+ const desiredPoint=useRef(new Vector3());
+ const desiredCamera=useRef(new Vector3());
  useFrame(({camera,clock},delta)=>{
-  if(world.current){const target=-state.heading*Math.PI/180;const difference=Math.atan2(Math.sin(target-world.current.rotation.y),Math.cos(target-world.current.rotation.y));world.current.rotation.y+=difference*(1-Math.exp(-delta*1.5));}
-  camera.position.z+=(state.distance-camera.position.z)*(1-Math.exp(-delta*2.5));camera.position.y=1+Math.sin(clock.elapsedTime*.17)*.045;camera.lookAt(1,-.65,-6);
+  const angle=world.current?.rotation.y??0;
+  if(world.current){const target=-state.heading*Math.PI/180;const difference=Math.atan2(Math.sin(target-angle),Math.cos(target-angle));world.current.rotation.y+=difference*(1-Math.exp(-delta*1.5));}
+  const floor=oceanEnvironment(state.depth).floorHeight;
+  const locations:Record<OceanSubject,[number,number,number]>={
+   jelly:[0,.4,7],school:[4,.4,-4],crawler:[2.1,floor+seabedHeight(2.1,-4)+.2,-4],
+   garden:[2.7,floor+seabedHeight(2.7,-3)+.5,-3],rock:[3,floor+seabedHeight(3,0)+.5,0],
+   vent:[-4,floor+seabedHeight(-4,-7)+1,-7]
+  };
+  if(subject){
+   const point=locations[subject];
+   desiredPoint.current.set(...point).applyAxisAngle(new Vector3(0,1,0),world.current?.rotation.y??0);
+   desiredCamera.current.copy(desiredPoint.current).add(new Vector3(0,1.3,subject==='jelly'?3.3:4.1));
+  }else{
+   desiredPoint.current.set(1,-.65,-6);
+   desiredCamera.current.set(0,1+Math.sin(clock.elapsedTime*.17)*.045,state.distance);
+  }
+  const smoothing=1-Math.exp(-delta*1.7);
+  targetPoint.current.lerp(desiredPoint.current,smoothing);
+  camera.position.lerp(desiredCamera.current,smoothing);
+  camera.lookAt(targetPoint.current);
  });
  return <><Lighting depth={state.depth}/><group ref={world}><Seabed depth={state.depth}/><WaterCeiling depth={state.depth}/><Rocks depth={state.depth} sonar={state.sonarCount>0} onInspect={onInspect}/><OceanDetails depth={state.depth} onInspect={onInspect}/><BenthicLife depth={state.depth} onInspect={onInspect}/>
   <Sparkles count={180} scale={[24,12,28]} position={[0,0,-8]} size={1.2} speed={.16} opacity={.24} color='#a5cfd0'/>
   {Array.from({length:7},(_,i)=><Jelly key={i} index={i} onInspect={onInspect}/>)}
   {Array.from({length:18},(_,i)=><Swimmer key={i} index={i} onInspect={onInspect}/>)}</group><Submersible samples={state.samples} collection={state.collection} lights={state.lights}/><SonarPulse count={state.sonarCount}/></>;
 }
-export function OceanScene({state,onInspect}:{state:OceanState;onInspect:(id:OceanSubject)=>void}) {
- return <div className='ocean-canvas' role='img' aria-label='Oceano hipotético com relevo, luz filtrada, submersível e organismos fictícios. Profundidade e rumo alteram a cena.'><Canvas camera={{position:[0,1,7],fov:52,near:.1,far:80}} dpr={[1,1.5]} gl={{antialias:true,toneMapping:ACESFilmicToneMapping,outputColorSpace:SRGBColorSpace}}><OceanWorld state={state} onInspect={onInspect}/></Canvas></div>;
+export function OceanScene({state,subject,onInspect}:{state:OceanState;subject:OceanSubject|null;onInspect:(id:OceanSubject)=>void}) {
+ return <div className='ocean-canvas' role='img' aria-label='Oceano hipotético com relevo, luz filtrada, submersível e organismos fictícios. Profundidade e rumo alteram a cena.'><Canvas camera={{position:[0,1,7],fov:52,near:.1,far:80}} dpr={[1,1.5]} gl={{antialias:true,toneMapping:ACESFilmicToneMapping,outputColorSpace:SRGBColorSpace}}><OceanWorld state={state} subject={subject} onInspect={onInspect}/></Canvas></div>;
 }
 
 
