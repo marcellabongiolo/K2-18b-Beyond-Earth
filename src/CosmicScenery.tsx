@@ -1,5 +1,5 @@
 import { spaceTargets, debrisPosition, type SpaceTargetId } from './exploration';
-import { Billboard } from '@react-three/drei';
+import { Billboard, Html } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { useEffect, useMemo, useRef } from 'react';
 import { AdditiveBlending, BufferGeometry, BufferAttribute, Color, Group, InstancedMesh, Object3D, ShaderMaterial } from 'three';
@@ -20,6 +20,7 @@ function Galaxy({id,onSelect}:{id:SpaceTargetId;onSelect:(id:SpaceTargetId)=>voi
  return <group position={[...object.position]} rotation={[.7,.3,.4]}>
   <points geometry={geometry}><pointsMaterial size={.07} vertexColors transparent opacity={.85} depthWrite={false}/></points>
   <mesh onClick={e=>{e.stopPropagation();onSelect(id);}}><sphereGeometry args={[object.radius,12,8]}/><meshBasicMaterial transparent opacity={0} depthWrite={false} colorWrite={false}/></mesh>
+  <Html position={[0,object.radius*.22,0]} center distanceFactor={18} style={{pointerEvents:'none'}}><span className='space-label space-label--distant'>{object.name} · artístico</span></Html>
   <mesh><sphereGeometry args={[.22,16,12]}/><meshBasicMaterial color='#ffe3b8'/></mesh>
  </group>;
 }
@@ -55,5 +56,5 @@ function Comet({onSelect}:{onSelect:(id:SpaceTargetId)=>void}){
 }
 export function CosmicScenery({onSelect}:{onSelect:(id:SpaceTargetId)=>void}){return <group>
  {[ [0,0,-85],[0,0,85],[85,0,0],[-85,0,0],[0,85,0],[0,-85,0] ].map((position,i)=><DustVeil key={i} position={position as [number,number,number]}/>)}
- {spaceTargets.filter(t=>t.id.startsWith('galaxy')).map(t=><Galaxy key={t.id} id={t.id} onSelect={onSelect}/>)}<Debris/><mesh position={[3,-2,-2]} onClick={e=>{e.stopPropagation();onSelect('fragment');}}><dodecahedronGeometry args={[.2,1]}/><meshStandardMaterial color='#8d8174' roughness={.98}/></mesh><Comet onSelect={onSelect}/>
+ {spaceTargets.filter(t=>t.id.startsWith('galaxy')).map(t=><Galaxy key={t.id} id={t.id} onSelect={onSelect}/>)}<Debris/><Html position={[3,-1.57,-2]} center distanceFactor={8} style={{pointerEvents:'none'}}><span className='space-label'>Fragmento rochoso · artístico</span></Html><mesh position={[3,-2,-2]} onClick={e=>{e.stopPropagation();onSelect('fragment');}}><dodecahedronGeometry args={[.2,1]}/><meshStandardMaterial color='#8d8174' roughness={.98}/></mesh><Comet onSelect={onSelect}/>
  </group>;}
