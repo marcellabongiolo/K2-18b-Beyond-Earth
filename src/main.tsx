@@ -19,7 +19,7 @@ import { initialOcean, oceanReducer, oceanZone, collectionStage } from './ocean'
 import './style.css';
 
 function SpaceScene({probeVisible,phase,distance,systemView,cinematic,focus,onSelect}:{probeVisible:boolean;phase:FlightPhase;distance:number;systemView:boolean;cinematic:boolean;focus:SpaceTargetId;onSelect:(id:SpaceTargetId)=>void}) {
- return <Canvas camera={{position:[0,.15,6],fov:43,near:.05}} dpr={[1,1.5]} gl={{antialias:true,toneMapping:ACESFilmicToneMapping,outputColorSpace:SRGBColorSpace}}>
+ return <Canvas camera={{position:[0,.15,6],fov:43,near:.05}} dpr={[1.5,2]} gl={{antialias:true,toneMapping:ACESFilmicToneMapping,outputColorSpace:SRGBColorSpace}}>
   <color attach='background' args={['#030711']}/><hemisphereLight args={['#b8d8ef','#16334b',.72]}/><ambientLight intensity={.4}/>
   <directionalLight position={[-5,3,5]} intensity={3.6} color='#f2f8ff'/><pointLight position={[5,-3,-2]} intensity={5.2} color='#578ac0'/>
   <Suspense fallback={null}><group onClick={e=>{e.stopPropagation();onSelect('b');}}><PlanetSurface/></group><SpaceSurroundings onSelect={onSelect}/>{cinematic&&<CosmicScenery onSelect={onSelect}/>}{phase==='descent'&&<DescentLife/>}<Atmosphere active={phase==='descent'}/>{probeVisible&&<Probe/>}<Stars radius={95} depth={55} count={6000} factor={3.0} saturation={.3} fade speed={.15}/></Suspense>

@@ -31,7 +31,7 @@ export function cloudField(u: number, v: number): number {
  */
 export function createPlanetTexture(): HTMLCanvasElement {
  const canvas = document.createElement('canvas');
- canvas.width = 1024; canvas.height = 512;
+ canvas.width = 2048; canvas.height = 1024;
  const ctx = canvas.getContext('2d'); if (!ctx) return canvas;
  const pixels = ctx.createImageData(canvas.width, canvas.height);
  const clamp = (v: number) => Math.max(0, Math.min(1, v));

@@ -27,7 +27,7 @@ export function SpaceSurroundings({onSelect}:{onSelect:(id:SpaceTargetId)=>void}
  }),[]);
  const companion=useMemo(()=>new ShaderMaterial({
   vertexShader:`varying vec3 p;varying vec3 n;void main(){p=position;n=normal;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
-  fragmentShader:`varying vec3 p;varying vec3 n;void main(){float patches=sin(p.x*18.+sin(p.z*23.))*sin(p.y*20.-p.z*11.);float light=.04+max(0.,dot(normalize(n),normalize(vec3(-1.,.6,.4))))*.9;vec3 color=mix(vec3(.16,.12,.10),vec3(.46,.35,.26),patches*.3+.5)*light;gl_FragColor=vec4(color,1.);
+  fragmentShader:`varying vec3 p;varying vec3 n;void main(){float broad=sin(p.x*18.+sin(p.z*23.))*sin(p.y*20.-p.z*11.);float fine=sin(p.x*86.+p.z*49.)*sin(p.y*92.-p.x*39.);float ridges=abs(sin(p.x*38.+p.y*27.+sin(p.z*15.)));float light=.25+max(0.,dot(normalize(n),normalize(vec3(-1.,.6,.4))))*.9;float terrain=clamp(broad*.28+fine*.10+ridges*.16+.46,0.,1.);vec3 color=mix(vec3(.18,.14,.12),vec3(.58,.46,.34),terrain)*light;gl_FragColor=vec4(color,1.);
   #include <tonemapping_fragment>
   #include <colorspace_fragment>
   }`,
@@ -42,7 +42,7 @@ export function SpaceSurroundings({onSelect}:{onSelect:(id:SpaceTargetId)=>void}
    <Html occlude position={[0,-1.25,0]} center style={{pointerEvents:'none'}}><span className='space-label'>K2-18 · estrela</span></Html>
   </group>
   <group position={[5,2.6,-9]}>
-   <mesh material={companion} onClick={e=>{e.stopPropagation();onSelect('c');}}><sphereGeometry args={[.48,40,24]}/></mesh>
+   <mesh material={companion} onClick={e=>{e.stopPropagation();onSelect('c');}}><sphereGeometry args={[.48,96,64]}/></mesh>
    <Html occlude position={[0,-.85,0]} center style={{pointerEvents:'none'}}><span className='space-label'>K2-18 c</span></Html>
   </group>
  </group>;
