@@ -29,7 +29,9 @@ jobs:
         run: npm test
       - name: Build website
         run: npm run build
-      - name: Verify static Pages entrypoints\n        run: node scripts/check-pages-build.mjs\n      - name: Configure Pages
+      - name: Verify static Pages entrypoints
+        run: node scripts/check-pages-build.mjs
+      - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload build
         uses: actions/upload-pages-artifact@v3
