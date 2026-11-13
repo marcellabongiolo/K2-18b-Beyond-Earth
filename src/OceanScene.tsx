@@ -1,7 +1,8 @@
 import type { OceanSubject } from './exploration';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Sparkles } from '@react-three/drei';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { dragOrbitAngle } from './oceanTouch';
 import { ACESFilmicToneMapping, AdditiveBlending, Color, DirectionalLight, DoubleSide, Fog, Group, Mesh, MeshBasicMaterial, Object3D, Vector3, PlaneGeometry, ShaderMaterial, SRGBColorSpace } from 'three';
 import { oceanEnvironment, seabedHeight, type Collection, type OceanState } from './ocean';
 
@@ -190,14 +191,14 @@ function OceanDetails({depth,onInspect}:{depth:number;onInspect:(id:OceanSubject
  </group>;
 }
 
-function OceanWorld({state,subject,onInspect}:{state:OceanState;subject:OceanSubject|null;onInspect:(id:OceanSubject)=>void}) {
+function OceanWorld({state,subject,onInspect,dragAngle}:{state:OceanState;subject:OceanSubject|null;onInspect:(id:OceanSubject)=>void;dragAngle:number}) {
  const world=useRef<Group>(null);
  const targetPoint=useRef(new Vector3(1,-.65,-6));
  const desiredPoint=useRef(new Vector3());
  const desiredCamera=useRef(new Vector3());
  useFrame(({camera,clock},delta)=>{
   const angle=world.current?.rotation.y??0;
-  if(world.current){const target=-state.heading*Math.PI/180;const difference=Math.atan2(Math.sin(target-angle),Math.cos(target-angle));world.current.rotation.y+=difference*(1-Math.exp(-delta*1.5));}
+  if(world.current){const target=-state.heading*Math.PI/180+dragAngle;const difference=Math.atan2(Math.sin(target-angle),Math.cos(target-angle));world.current.rotation.y+=difference*(1-Math.exp(-delta*1.5));}
   const floor=oceanEnvironment(state.depth).floorHeight;
   const locations:Record<OceanSubject,[number,number,number]>={
    jelly:[0,.4,7],school:[4,.4,-4],crawler:[2.1,floor+seabedHeight(2.1,-4)+.2,-4],
@@ -223,7 +224,14 @@ function OceanWorld({state,subject,onInspect}:{state:OceanState;subject:OceanSub
   {Array.from({length:18},(_,i)=><Swimmer key={i} index={i} onInspect={onInspect}/>)}</group><Submersible samples={state.samples} collection={state.collection} lights={state.lights}/><SonarPulse count={state.sonarCount}/></>;
 }
 export function OceanScene({state,subject,onInspect}:{state:OceanState;subject:OceanSubject|null;onInspect:(id:OceanSubject)=>void}) {
- return <div className='ocean-canvas' role='img' aria-label='Oceano hipotético com relevo, luz filtrada, submersível e organismos fictícios. Profundidade e rumo alteram a cena.'><Canvas camera={{position:[0,1,7],fov:52,near:.1,far:80}} dpr={[1,1.5]} gl={{antialias:true,toneMapping:ACESFilmicToneMapping,outputColorSpace:SRGBColorSpace}}><OceanWorld state={state} subject={subject} onInspect={onInspect}/></Canvas></div>;
+ const [dragAngle,setDragAngle]=useState(0);
+ const pointer=useRef<{id:number;x:number;y:number}|null>(null);
+ return <div className='ocean-canvas' role='region' aria-label='Oceano hipotético interativo. Arraste com o dedo ou mouse para girar a cena; use os botões para profundidade e zoom.'
+  style={{touchAction:'none'}}
+  onPointerDown={e=>{if(pointer.current)return;pointer.current={id:e.pointerId,x:e.clientX,y:e.clientY};e.currentTarget.setPointerCapture(e.pointerId);}}
+  onPointerMove={e=>{const p=pointer.current;if(!p||p.id!==e.pointerId)return;const dx=e.clientX-p.x;pointer.current={...p,x:e.clientX,y:e.clientY};setDragAngle(a=>dragOrbitAngle(a,dx));}}
+  onPointerUp={e=>{if(pointer.current?.id===e.pointerId)pointer.current=null;if(e.currentTarget.hasPointerCapture(e.pointerId))e.currentTarget.releasePointerCapture(e.pointerId);}}
+  onPointerCancel={()=>{pointer.current=null;}}>
+  <Canvas camera={{position:[0,1,7],fov:52,near:.1,far:80}} dpr={[1,1.5]} gl={{antialias:true,toneMapping:ACESFilmicToneMapping,outputColorSpace:SRGBColorSpace}}><OceanWorld state={state} subject={subject} onInspect={onInspect} dragAngle={dragAngle}/></Canvas>
+ </div>;
 }
-
-
