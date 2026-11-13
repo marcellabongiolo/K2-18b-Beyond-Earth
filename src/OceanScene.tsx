@@ -106,6 +106,32 @@ function Swimmer({index,onInspect}:{index:number;onInspect:(id:OceanSubject)=>vo
  </group>;
 }
 
+
+/** Imagined benthic creatures; placement follows the simulated seabed. */
+function BenthicLife({depth,onInspect}:{depth:number;onInspect:(id:OceanSubject)=>void}) {
+ const group=useRef<Group>(null);
+ useFrame(({clock},delta})=>{
+  if(!group.current)return;
+  const target=oceanEnvironment(depth).floorHeight;
+  group.current.position.y+=(target-group.current.position.y)*(1-Math.exp(-delta*1.4));
+  group.current.children.forEach((child,i)=>{
+   child.position.x+=Math.sin(clock.elapsedTime*.32+i*2.1)*delta*.013;
+   child.rotation.y=Math.sin(clock.elapsedTime*.25+i)*.38;
+  });
+ });
+ return <group ref={group} position={[0,oceanEnvironment(depth).floorHeight,0]}>
+  {Array.from({length:12},(_,i)=>{
+   const angle=i*2.39996,r=3.1+(i%5)*1.4,x=Math.sin(angle)*r,z=-2-Math.cos(angle)*r;
+   const size=.14+(i%4)*.05;
+   return <group key={i} position={[x,seabedHeight(x,z)+size*.38,z]} onClick={e=>{e.stopPropagation();onInspect('crawler');}}>
+    <mesh scale={[1.5,.48,1]}><icosahedronGeometry args={[size,1]}/><meshStandardMaterial color={i%2?'#8bafa1':'#a5a78a'} roughness={.88}/></mesh>
+    {Array.from({length:6},(_,j)=><mesh key={j} position={[(j%2?1:-1)*size*.9,-size*.14,(Math.floor(j/2)-1)*size*.48]} rotation={[0,0,(j%2?1:-1)*.7]}><capsuleGeometry args={[size*.09,size*.75,3,5]}/><meshStandardMaterial color='#6b8e82' roughness={.95}/></mesh>)}
+    <mesh position={[0,size*.3,size*.3]}><sphereGeometry args={[size*.18,8,6]}/><meshStandardMaterial color='#c8e5d0' emissive='#407b71' emissiveIntensity={.25}/></mesh>
+   </group>;
+  })}
+ </group>;
+}
+
 function SampleCollector({collection}:{collection:Collection|null}) {
  const arm=useRef<Group>(null),particles=useRef<Group>(null),ring=useRef<Mesh>(null);
  const extension=useRef(0);
@@ -170,7 +196,7 @@ function OceanWorld({state,onInspect}:{state:OceanState;onInspect:(id:OceanSubje
   if(world.current){const target=-state.heading*Math.PI/180;const difference=Math.atan2(Math.sin(target-world.current.rotation.y),Math.cos(target-world.current.rotation.y));world.current.rotation.y+=difference*(1-Math.exp(-delta*1.5));}
   camera.position.z+=(state.distance-camera.position.z)*(1-Math.exp(-delta*2.5));camera.position.y=1+Math.sin(clock.elapsedTime*.17)*.045;camera.lookAt(1,-.65,-6);
  });
- return <><Lighting depth={state.depth}/><group ref={world}><Seabed depth={state.depth}/><WaterCeiling depth={state.depth}/><Rocks depth={state.depth} sonar={state.sonarCount>0} onInspect={onInspect}/><OceanDetails depth={state.depth} onInspect={onInspect}/>
+ return <><Lighting depth={state.depth}/><group ref={world}><Seabed depth={state.depth}/><WaterCeiling depth={state.depth}/><Rocks depth={state.depth} sonar={state.sonarCount>0} onInspect={onInspect}/><OceanDetails depth={state.depth} onInspect={onInspect}/><BenthicLife depth={state.depth} onInspect={onInspect}/>
   <Sparkles count={180} scale={[24,12,28]} position={[0,0,-8]} size={1.2} speed={.16} opacity={.24} color='#a5cfd0'/>
   {Array.from({length:7},(_,i)=><Jelly key={i} index={i} onInspect={onInspect}/>)}
   {Array.from({length:18},(_,i)=><Swimmer key={i} index={i} onInspect={onInspect}/>)}</group><Submersible samples={state.samples} collection={state.collection} lights={state.lights}/><SonarPulse count={state.sonarCount}/></>;
