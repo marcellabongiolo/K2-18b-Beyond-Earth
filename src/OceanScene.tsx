@@ -223,15 +223,16 @@ function OceanWorld({state,subject,onInspect,dragAngle}:{state:OceanState;subjec
   {Array.from({length:7},(_,i)=><Jelly key={i} index={i} onInspect={onInspect}/>)}
   {Array.from({length:18},(_,i)=><Swimmer key={i} index={i} onInspect={onInspect}/>)}</group><Submersible samples={state.samples} collection={state.collection} lights={state.lights}/><SonarPulse count={state.sonarCount}/></>;
 }
-export function OceanScene({state,subject,onInspect}:{state:OceanState;subject:OceanSubject|null;onInspect:(id:OceanSubject)=>void}) {
+export function OceanScene({state,subject,onInspect,onZoom}:{state:OceanState;subject:OceanSubject|null;onInspect:(id:OceanSubject)=>void;onZoom:(closer:boolean)=>void}) {
  const [dragAngle,setDragAngle]=useState(0);
- const pointer=useRef<{id:number;x:number;y:number}|null>(null);
+ const pointers=useRef(new Map<number,{x:number;y:number}>());
+ const lastPinch=useRef<number|null>(null);
  return <div className='ocean-canvas' role='region' aria-label='Oceano hipotético interativo. Arraste com o dedo ou mouse para girar a cena; use os botões para profundidade e zoom.'
   style={{touchAction:'none'}}
-  onPointerDown={e=>{if(pointer.current)return;pointer.current={id:e.pointerId,x:e.clientX,y:e.clientY};e.currentTarget.setPointerCapture(e.pointerId);}}
-  onPointerMove={e=>{const p=pointer.current;if(!p||p.id!==e.pointerId)return;const dx=e.clientX-p.x;pointer.current={...p,x:e.clientX,y:e.clientY};setDragAngle(a=>dragOrbitAngle(a,dx));}}
-  onPointerUp={e=>{if(pointer.current?.id===e.pointerId)pointer.current=null;if(e.currentTarget.hasPointerCapture(e.pointerId))e.currentTarget.releasePointerCapture(e.pointerId);}}
-  onPointerCancel={()=>{pointer.current=null;}}>
-  <Canvas camera={{position:[0,1,7],fov:52,near:.1,far:80}} dpr={[1,1.5]} gl={{antialias:true,toneMapping:ACESFilmicToneMapping,outputColorSpace:SRGBColorSpace}}><OceanWorld state={state} subject={subject} onInspect={onInspect} dragAngle={dragAngle}/></Canvas>
+  onPointerDown={e=>{pointers.current.set(e.pointerId,{x:e.clientX,y:e.clientY});e.currentTarget.setPointerCapture(e.pointerId);}}
+  onPointerMove={e=>{const p=pointers.current.get(e.pointerId);if(!p)return;const dx=e.clientX-p.x;pointers.current.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.current.size===1){setDragAngle(a=>dragOrbitAngle(a,dx));lastPinch.current=null;}else if(pointers.current.size===2){const [a,b]=[...pointers.current.values()];const distance=Math.hypot(a.x-b.x,a.y-b.y);if(lastPinch.current!==null&&Math.abs(distance-lastPinch.current)>18){onZoom(distance>lastPinch.current);lastPinch.current=distance;}else if(lastPinch.current===null)lastPinch.current=distance;}}}
+  onPointerUp={e=>{pointers.current.delete(e.pointerId);lastPinch.current=null;if(e.currentTarget.hasPointerCapture(e.pointerId))e.currentTarget.releasePointerCapture(e.pointerId);}}
+  onPointerCancel={e=>{pointers.current.delete(e.pointerId);lastPinch.current=null;}}>
+  <Canvas camera={{position:[0,1,7],fov:52,near:.1,far:80}} dpr={[1,1.25]} gl={{antialias:true,toneMapping:ACESFilmicToneMapping,outputColorSpace:SRGBColorSpace}}><OceanWorld state={state} subject={subject} onInspect={onInspect} dragAngle={dragAngle}/></Canvas>
  </div>;
 }
