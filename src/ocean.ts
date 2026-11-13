@@ -7,7 +7,7 @@ export function oceanReducer(state: OceanState, action: OceanAction): OceanState
  switch (action) {
   case 'lights': return {...state,lights:!state.lights};
   case 'sonar': return {...state,sonarCount:state.sonarCount+1};
-  case 'approach': return { ...state, distance: Math.max(4,state.distance-0.5) };
+  case 'approach': return { ...state, distance: Math.max(2.5,state.distance-0.5) };
   case 'retreat': return { ...state, distance: Math.min(12,state.distance+0.5) };
   case 'dive': return { ...state, depth: Math.min(1000, state.depth + 40) };
   case 'ascend': return { ...state, depth: Math.max(0, state.depth - 40) };
@@ -31,7 +31,7 @@ export function oceanZone(depth: number): string { return depth < 200 ? 'ZONA CR
 export function oceanEnvironment(depth: number) {
  const fraction = Math.max(0, Math.min(1, depth / 1000));
  return { fraction, sunlight: 2.6 * Math.exp(-fraction * 4),
-  visibility: 24 - fraction * 13, surfaceHeight: 4 + fraction * 18,
+  visibility: 40 - fraction * 14, surfaceHeight: 4 + fraction * 18,
   floorHeight: -4 + fraction * 1.2 };
 }
 export function seabedHeight(x: number, z: number) {
