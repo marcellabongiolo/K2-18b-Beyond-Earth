@@ -54,7 +54,7 @@ function App(){
  const lastSample=ocean.sampleLog[ocean.sampleLog.length-1];
  const signal=telemetry(mission.distance);
  const distance=oceanMode?ocean.distance:mission.distance;
- const nearLimit=oceanMode?4:3.5,farLimit=12;
+ const nearLimit=oceanMode?2.5:2.4,farLimit=12;
  const zoom=(closer:boolean)=>oceanMode?oceanDispatch(closer?'approach':'retreat'):dispatch(closer?'approach':'retreat');
  return <main className={'explorer'+(controlsOpen?'':' controls-hidden')}>
   <header className='app-header'><span className='brand'>BEYOND <b>EARTH</b></span><span className='world-title'>K2-18 b</span><button type='button' onClick={()=>{setOceanMode(false);setControlsOpen(true);setLabOpen(true);window.setTimeout(()=>document.getElementById('laboratorio')?.scrollIntoView({behavior:'smooth',block:'start'}),100);}}>🔬 Laboratório</button><button type='button' aria-expanded={controlsOpen} aria-controls='simulation-controls' onClick={()=>setControlsOpen(v=>!v)}>{controlsOpen?'Ocultar controles':'Mostrar controles'}</button></header>
