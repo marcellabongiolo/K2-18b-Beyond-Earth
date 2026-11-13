@@ -92,5 +92,11 @@ function App(){
   <footer className='scientific-note'>SIMULAÇÃO ARTÍSTICA · VIDA NÃO CONFIRMADA · NÃO ESTÁ EM ESCALA</footer>
  </main>;
 }
-createRoot(document.getElementById('root')!).render(<React.StrictMode><App/></React.StrictMode>);
+class SimulationErrorBoundary extends React.Component<{children:React.ReactNode},{failed:boolean}> {
+ state={failed:false};
+ static getDerivedStateFromError(){return {failed:true};}
+ componentDidCatch(error:Error){console.error('Falha na simulação K2-18 b:',error);}
+ render(){if(this.state.failed)return <main style={{minHeight:'100dvh',background:'#061723',color:'#e7f8fb',fontFamily:'system-ui,sans-serif',display:'grid',placeItems:'center',padding:24,textAlign:'center'}}><div><h1>Não foi possível iniciar a simulação</h1><p>Ocorreu um erro ao carregar a experiência 3D. O laboratório independente continua disponível.</p><button type='button' onClick={()=>window.location.reload()}>Tentar novamente</button> <a style={{color:'#89eced'}} href='./lab.html'>Abrir laboratório</a></div></main>;return this.props.children;}
+}
+createRoot(document.getElementById('root')!).render(<React.StrictMode><SimulationErrorBoundary><App/></SimulationErrorBoundary></React.StrictMode>);
 
