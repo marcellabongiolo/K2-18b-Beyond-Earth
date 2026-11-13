@@ -49,3 +49,10 @@
 .startup-gate{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;min-height:300px;height:100%;padding:24px;text-align:center;background:radial-gradient(circle at center,#13405c,#030711 72%);color:#e7faff}.startup-gate h2{font-size:clamp(24px,4vw,42px);margin:0}.startup-gate p{max-width:460px}.startup-gate button{padding:14px 25px;background:#18848d;color:white;border:1px solid #7be3d9;border-radius:9px;font-weight:700}.startup-gate a{color:#91f2e5}.quality-control{display:flex;align-items:center;gap:8px;color:#d8f5f5}.quality-control select{background:#0b2737;color:white;border:1px solid #6a9aa8;padding:8px;border-radius:6px}
 
 .mission-center{padding:15px 20px;background:linear-gradient(120deg,#081f31,#103b4a);border:1px solid #367887;color:#e4fbfc}.mission-center>div:first-child{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.mission-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:14px 0}.mission-metrics span{background:#092735;border:1px solid #265e70;border-radius:8px;padding:9px}.mission-metrics b{display:block;color:#83f2de}.mission-buttons{display:flex;flex-wrap:wrap;gap:8px}.mission-buttons button,.mission-buttons a{padding:9px 12px;background:#17647a;color:white;border:1px solid #4b9da7;border-radius:8px;text-decoration:none;cursor:pointer}.mission-center p{margin-bottom:0}.ocean-canvas{position:relative}.ocean-camera-toggle{position:absolute;z-index:5;top:12px;left:12px;background:#0b4054;color:#fff;border:1px solid #8ad9e1;padding:10px;border-radius:8px;cursor:pointer}
+
+/* Keep the mission panel compact so the 3D viewport remains visible. */
+.mission-center{padding:9px 14px}
+.mission-center-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.mission-center .mission-toggle{padding:7px 12px;background:#17647a;color:#fff;border:1px solid #4b9da7;border-radius:8px;cursor:pointer}
+#mission-center-details[hidden]{display:none}
+@media(max-width:600px){.mission-center{padding:8px 10px}.mission-center-heading strong{font-size:13px}.mission-center .mission-toggle{padding:6px 9px}}
