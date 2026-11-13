@@ -1,3 +1,76 @@
+# K2-18b: Beyond Earth — Exploração espacial interativa
+
+**[🚀 Abrir exploração 3D](https://marcellabongiolo.github.io/K2-18b-Beyond-Earth/)** · **[🔬 Abrir laboratório científico independente](https://marcellabongiolo.github.io/K2-18b-Beyond-Earth/lab.html)**
+
+Plataforma educativa e artística de exploração do exoplaneta K2-18 b, desenvolvida com **React, TypeScript, Three.js, React Three Fiber e Vite**. Inclui central de comando, navegação orbital, aproximação atmosférica, oceano hipotético, submersível, missões guiadas e laboratório com importação de espectros CSV.
+
+> **Aviso científico:** K2-18 b é um planeta real, mas a representação 3D, o oceano, a fauna, as missões e as amostras são **simulações artísticas**. Não há confirmação de oceanos nem de vida extraterrestre em K2-18 b. O laboratório não substitui análise científica validada.
+
+## Funcionalidades atuais
+
+- **Inicialização controlada:** a cena 3D só começa após clicar em iniciar, evitando iniciar WebGL imediatamente.
+- **Qualidade gráfica:** Ultra (padrão), Automático (perfil intermediário fixo) e Leve; escolha feita por sessão.
+- **Central de comando:** métricas de missão, acesso a etapas de órbita, aproximação, oceano e coleta; conquistas de sessão.
+- **Exploração oceânica hipotética:** controles de profundidade, direção, sonar, luzes, amostras e câmera externa ou em primeira pessoa.
+- **Laboratório independente em `lab.html`:** abre sem React e WebGL, importa até dois espectros CSV, sobrepõe curvas SVG, salva até 15 experimentos no armazenamento local do navegador e exporta cenários JSON.
+- **Integridade científica:** distinção entre dados observados, hipóteses e elementos fictícios.
+
+## Guia rápido
+
+1. Abra a [exploração 3D](https://marcellabongiolo.github.io/K2-18b-Beyond-Earth/).
+2. Selecione a qualidade gráfica; para computadores lentos, prefira **Leve**.
+3. Clique em **Iniciar exploração 3D** e escolha uma etapa na **Central de Comando**.
+4. Para analisar dados sem carregar 3D, acesse diretamente o [laboratório](https://marcellabongiolo.github.io/K2-18b-Beyond-Earth/lab.html).
+5. No laboratório, importe CSV com cabeçalho `wavelength,value,uncertainty`; opcionalmente importe outro para comparar. Salve localmente ou exporte JSON.
+
+## Desenvolvimento e testes
+
+No Windows, instale Node.js, Git e VS Code e execute:
+
+```powershell
+npm install
+npm test
+npm run build
+npm run dev
+```
+
+A integração contínua executa testes automatizados e compilação TypeScript/Vite em cada PR. **Testes unitários e compilação não substituem testes reais de navegador ou dispositivos móveis.**
+
+## Checklist manual de aceitação
+
+- [ ] Página inicial abre e mostra a tela de início sem erro no console.
+- [ ] Ultra, Automático e Leve podem ser selecionados; o 3D inicia ao clicar.
+- [ ] Órbita, aproximação e oceano carregam e respondem a comandos.
+- [ ] Submersível alterna entre câmera externa e primeira pessoa.
+- [ ] O laboratório independente abre mesmo sem inicializar o 3D.
+- [ ] Dois CSVs válidos aparecem no gráfico; arquivos inválidos mostram mensagem compreensível.
+- [ ] Salvar, carregar, excluir e exportar experimentos funciona.
+- [ ] Navegação por teclado, foco, zoom e layout móvel são utilizáveis.
+- [ ] GitHub Pages publica a versão de `main` sem erros.
+
+## Arquitetura essencial
+
+| Arquivo | Responsabilidade |
+| --- | --- |
+| `src/main.tsx` | Interface React, central de comando, controles e cena orbital |
+| `src/OceanScene.tsx` | Cena oceânica e câmera do submersível |
+| `src/ocean.ts` | Regras de navegação, sonar e coleta simulada |
+| `lab.html` | Laboratório autônomo com CSV, gráfico SVG e histórico local |
+| `src/science.ts` | Informações e avisos científicos |
+| `tests/` | Testes automatizados |
+| `.github/workflows/` | CI e publicação no GitHub Pages |
+
+## Limitações conhecidas
+
+- O modo Automático ainda não mede FPS nem detecta a GPU.
+- O histórico do laboratório fica apenas no navegador usado e pode ser apagado ao limpar dados locais.
+- O laboratório não faz calibração de instrumentos, processamento FITS ou inferência científica validada.
+- O projeto usa renderização WebGL; disponibilidade depende do navegador, drivers e hardware.
+
+---
+
+## Histórico de desenvolvimento (documentação anterior)
+
 # K2-18b: Beyond Earth
 
 ## 🌌 Explore the interactive experience
