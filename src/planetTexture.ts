@@ -31,7 +31,7 @@ export function cloudField(u: number, v: number): number {
  */
 export function createPlanetTexture(): HTMLCanvasElement {
  const canvas = document.createElement('canvas');
- canvas.width = 2048; canvas.height = 1024;
+ canvas.width = 512; canvas.height = 256;
  const ctx = canvas.getContext('2d'); if (!ctx) return canvas;
  const pixels = ctx.createImageData(canvas.width, canvas.height);
  const clamp = (v: number) => Math.max(0, Math.min(1, v));
@@ -89,7 +89,7 @@ export function createPlanetTexture(): HTMLCanvasElement {
 /** Transparent cloud-only map: surface colors no longer get repeated on cloud shells. */
 export function createCloudTexture(): HTMLCanvasElement {
  const canvas = document.createElement('canvas');
- canvas.width = 1024; canvas.height = 512;
+ canvas.width = 384; canvas.height = 192;
  const ctx = canvas.getContext('2d'); if (!ctx) return canvas;
  const image = ctx.createImageData(canvas.width, canvas.height);
  for (let y = 0; y < canvas.height; y++) for (let x = 0; x < canvas.width; x++) {
