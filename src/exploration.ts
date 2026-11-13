@@ -19,6 +19,7 @@ export function targetPosition(id:SpaceTargetId,time:number):[number,number,numb
 export function targetCameraDistance(id:SpaceTargetId,zoom:number){const t=spaceTargets.find(t=>t.id===id)!;return Math.max(t.radius*1.8,t.distance*Math.max(3.5,Math.min(12,zoom))/6);}
 export function debrisPosition(index:number):[number,number,number]{const angle=index*2.399963,r=7+(index%17)*.55;return [Math.sin(angle)*r,Math.cos(index*1.7)*5,Math.cos(angle)*r];}
 export const oceanSubjects = {
+ crawler:{name:'Rastejador bentônico fictício',description:'Criatura imaginária que se desloca lentamente sobre o fundo, com patas articuladas e carapaça mineralizada. Nenhuma vida foi confirmada em K2-18 b.'},
  garden:{name:'Colônia filamentosa fictícia',description:'Formação artística que oscila com a corrente simulada; não é vegetação ou vida confirmada.'},
  jelly:{name:'Organismo pulsante fictício',description:'Modelo artístico. Observe a pulsação e os filamentos; não representa uma espécie descoberta.'},
  school:{name:'Cardume fictício',description:'Nadadores simulados com caudas animadas e deslocamentos individuais.'},
