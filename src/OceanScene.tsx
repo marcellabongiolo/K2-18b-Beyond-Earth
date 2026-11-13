@@ -110,7 +110,7 @@ function Swimmer({index,onInspect}:{index:number;onInspect:(id:OceanSubject)=>vo
 /** Imagined benthic creatures; placement follows the simulated seabed. */
 function BenthicLife({depth,onInspect}:{depth:number;onInspect:(id:OceanSubject)=>void}) {
  const group=useRef<Group>(null);
- useFrame(({clock},delta})=>{
+ useFrame(({clock},delta)=>{
   if(!group.current)return;
   const target=oceanEnvironment(depth).floorHeight;
   group.current.position.y+=(target-group.current.position.y)*(1-Math.exp(-delta*1.4));
