@@ -31,7 +31,7 @@ export function oceanZone(depth: number): string { return depth < 200 ? 'ZONA CR
 export function oceanEnvironment(depth: number) {
  const fraction = Math.max(0, Math.min(1, depth / 1000));
  return { fraction, sunlight: 2.6 * Math.exp(-fraction * 4),
-  visibility: 24 - fraction * 13, surfaceHeight: 4 + fraction * 18,
+  visibility: 40 - fraction * 14, surfaceHeight: 4 + fraction * 18,
   floorHeight: -4 + fraction * 1.2 };
 }
 export function seabedHeight(x: number, z: number) {
