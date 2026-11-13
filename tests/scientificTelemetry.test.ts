@@ -13,7 +13,7 @@ describe('Missão 02 — rigor da telemetria ilustrativa',()=>{
  it('mantém DMS/DMDS explicitamente ambíguo',()=>{
   expect(spectralSpecies.find(s=>s.id==='DMS')?.label).toMatch(/disputado/);
   expect(signalAssessment(100)).toMatch(/contestada/);
-  expect(scientificCaveat).toMatch(/não confirma/);
+  expect(scientificCaveat).toMatch(/nem confirma/);
   expect(signalAssessment(0)).toMatch(/inconclusivos/);
  });
  it('não fabrica um pico candidato mais forte com a calibração',()=>{
